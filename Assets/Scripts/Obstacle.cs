@@ -13,6 +13,7 @@ public class Obstacle : MonoBehaviour
             {
                 unit.enabled = false;
                 unit.Die();
+                this.gameObject.SetActive(false);
             }
         }
     }

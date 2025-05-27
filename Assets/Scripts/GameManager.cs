@@ -14,10 +14,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject player;
 
     //Flag
-    public bool movePermit { get; set; } = true;
+    public bool screenLimit { get; set; } = false; //분신이 스크린 넘어가려고 할 때 제한.
+    public bool wallLimit { get; set; } = false;
 
     //List
-    public List<GameObject> units { get; set; } = new List<GameObject>();
+    [HideInInspector] public List<GameObject> units { get; set; } = new List<GameObject>();
+    [HideInInspector] public List<GameObject> obstacles { get; set; } = new List<GameObject>();
+    [HideInInspector] public List<MirrorGate> gates { get; set; } = new List<MirrorGate>();
     public List<Transform> spawnPoints = new List<Transform>();
 
     void Awake()
@@ -32,8 +35,25 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // 씬 간 유지
 
         Physics2D.gravity = gravityScale;
+
+        Transform parent_obstacles = GameObject.Find("Obstacles").transform;
+        foreach(Transform child in parent_obstacles)
+        {
+            obstacles.Add(child.gameObject);
+        }
+
+        Transform parent_gates = GameObject.Find("Gates").transform;
+        foreach(Transform gate in parent_gates)
+        {
+            MirrorGate temp = gate.GetComponent<MirrorGate>();
+            gates.Add(temp);
+        }
     }
 
+    private void Update()
+    {
+        Physics2D.gravity = gravityScale;
+    }
     public void DestroyObj(GameObject targetObj = null)
     {
         if (targetObj != null)
@@ -59,5 +79,13 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         Instantiate(player, spawnPoints[0].position, Quaternion.identity);
+        foreach(GameObject obj in obstacles)
+        {
+            if (!obj.activeSelf) obj.SetActive(true);
+        }
+        foreach (MirrorGate gate in gates)
+        {
+            if (gate.isSolid) gate.ChangeState(0);
+        }
     }
 }

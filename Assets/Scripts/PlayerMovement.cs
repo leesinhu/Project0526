@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce { get; set; } = 5f;
     Transform groundCheck;
     public LayerMask groundLayer;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb { get; set; }
     public bool isGrounded { get; set; }
 
     [SerializeField] float coyoteTimeDuration = 0.15f;  // 코요테 타임 지속시간
@@ -42,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        this.moveSpeed = GameManager.Instance.moveSpeed;
+        this.jumpForce = GameManager.Instance.jumpForce;
         /*       // 점프 입력
                if (jumpFlag && isGrounded)
                {
@@ -60,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
                {
                    coyoteTimeCounter -= Time.deltaTime;  // 공중에 있으면 카운터 감소
                }*/
-        if (!GameManager.Instance.movePermit)
+        if (GameManager.Instance.screenLimit)
         {
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
@@ -68,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (jumpFlag && isGrounded)
+        if (jumpFlag && isGrounded && rb.velocity.y == 0)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
         // 좌우 이동
         if (isGrounded)
         {
-            if(GameManager.Instance.movePermit)
+            if(!GameManager.Instance.screenLimit)
             {
                 rb.velocity = new Vector3(movement * moveSpeed, rb.velocity.y, 0f);
             }
@@ -113,12 +115,12 @@ public class PlayerMovement : MonoBehaviour
                     Vector3 viewPos = Camera.main.WorldToViewportPoint(temp);
                     if(viewPos.x >= 0.9865f)
                     {
-                        GameManager.Instance.movePermit = false;
+                        GameManager.Instance.screenLimit = true;
                         break;
                     }
                     else
                     {
-                        GameManager.Instance.movePermit = true;
+                        GameManager.Instance.screenLimit = false;
                     }
                     movement = 1;
                 }
@@ -137,12 +139,12 @@ public class PlayerMovement : MonoBehaviour
                     Vector3 viewPos = Camera.main.WorldToViewportPoint(temp);
                     if (viewPos.x <= 0.0135)
                     {
-                        GameManager.Instance.movePermit = false;
+                        GameManager.Instance.screenLimit = true;
                         break;
                     }
                     else
                     {
-                        GameManager.Instance.movePermit = true;
+                        GameManager.Instance.screenLimit = false;
                     }
                     movement = -1;
                 }

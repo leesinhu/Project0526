@@ -9,6 +9,7 @@ public class MirrorGate : MonoBehaviour
     BoxCollider2D collider;
     SpriteRenderer spRend;
 
+    public bool isSolid = false;
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();
@@ -33,11 +34,28 @@ public class MirrorGate : MonoBehaviour
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
             Instantiate(mimic, mimicPos, Quaternion.identity);
 
+            ChangeState(1);
+            //Destroy(this.gameObject);
+        }
+    }
+
+    public void ChangeState(int i)
+    {
+        if(i == 1)
+        {
+            isSolid = true;
             collider.isTrigger = false;
             Color color = spRend.color;
             color.a = 1f;
             spRend.color = color;
-            //Destroy(this.gameObject);
+        }
+        else //0
+        {
+            isSolid = false;
+            collider.isTrigger = true;
+            Color color = spRend.color;
+            color.a = 100f/255f;
+            spRend.color = color;
         }
     }
 }
