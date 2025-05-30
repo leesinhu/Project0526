@@ -10,10 +10,42 @@ public class MirrorGate : MonoBehaviour
     SpriteRenderer spRend;
 
     public bool isSolid = false;
+
+    [SerializeField] Sprite solidSprite;  //교체할 얼음 스프라이트
+    Animator anim;                        // Animator
+    Sprite _defaultSprite;                // 기본상태용 스프라이트
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();
         spRend = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
+
+        _defaultSprite = spRend.sprite;
+    }
+
+    ///
+    /// 얼음 이미지 적용 추가 
+    ///
+    private void Update()
+    {
+        if (isSolid)
+        {
+            // solid 상태일 때: 애니메이션 끄고 스프라이트 교체
+            if (anim != null && anim.enabled)
+                anim.enabled = false;
+
+            if (spRend.sprite != solidSprite)
+                spRend.sprite = solidSprite;
+        }
+        else
+        {
+            // non-solid 상태일 때: 애니메이션 키고 원래대로
+            if (anim != null && !anim.enabled)
+                anim.enabled = true;
+
+            if (spRend.sprite != _defaultSprite)
+                spRend.sprite = _defaultSprite;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

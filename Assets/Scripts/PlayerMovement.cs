@@ -23,10 +23,13 @@ public class PlayerMovement : MonoBehaviour
     public float movement { get; set; }
     public bool jumpFlag { get; set; }
 
-
+    Animator anim;
+    SpriteRenderer spriteRenderer;
     private void Awake()
     {
         groundCheck = transform.GetChild(0);
+        anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void Start()
     {
@@ -70,11 +73,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        //
+        //추가
+        //애니메이션 작용 
+        bool isWalking = movement != 0 && isGrounded;
+        anim.SetBool("IsWalk", isWalking);
+        //이동방향으로 스프라이트 회전
+        if (movement != 0)
+        {
+            spriteRenderer.flipX = movement < 0; // 왼쪽으로 이동 시 flipX = true
+        }
+        //
+
+
         if (jumpFlag && isGrounded && rb.velocity.y == 0)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            anim.SetTrigger("IsJump");
         }
+
 
         // 좌우 이동
         if (isGrounded)
