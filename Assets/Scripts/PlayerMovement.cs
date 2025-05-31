@@ -19,7 +19,9 @@ public class PlayerMovement : MonoBehaviour
     float coyoteTimeCounter = 0f;
     float jumpBufferCounter = 0f;
 
-    //화살
+    //아이템
+    public bool hasArrow = false;
+    public bool hasTorch = false;
     [SerializeField] private Arrow Arrow;
 
     public InputManager inputManager { get; set; }
@@ -74,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // 화살 발사
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (hasArrow && Input.GetKeyDown(KeyCode.LeftShift))
         {
             Debug.Log("Arrow");
             Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, -0.5f, 0f);
