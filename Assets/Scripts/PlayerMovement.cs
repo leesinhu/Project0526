@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
     public float movement { get; set; }
     public bool jumpFlag { get; set; }
 
+    public bool canMove;
+
     Animator anim;
     SpriteRenderer spriteRenderer;
     private void Awake()
@@ -46,6 +48,12 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         GameManager.Instance.units.Add(this.gameObject);
+
+        canMove = true;
+        if(this.CompareTag("Mimic"))   // 현재 오브젝트가 player인지 mimic인지 구분
+        {
+            isMimic = true;
+        }
     }
 
     void Update()
@@ -109,22 +117,25 @@ public class PlayerMovement : MonoBehaviour
 
 
         // 좌우 이동
-        if (isGrounded)
-        {
-            if (!GameManager.Instance.screenLimit)
+        if(canMove)
+        { 
+            if (isGrounded)
             {
-                rb.velocity = new Vector3(movement * moveSpeed, rb.velocity.y, 0f);
+                if(!GameManager.Instance.screenLimit)
+                {
+                    rb.velocity = new Vector3(movement * moveSpeed, rb.velocity.y, 0f);
+                }
+             
             }
-
-        }
-        else
-        {
-            float currentX = rb.velocity.x;
-            if (movement != 0 && Mathf.Sign(movement) != Mathf.Sign(currentX))
+            else
             {
-                float deceleration = 12.5f;
-                float newX = Mathf.MoveTowards(currentX, 0, deceleration * Time.fixedDeltaTime);
-                rb.velocity = new Vector3(newX, rb.velocity.y, 0f);
+                float currentX = rb.velocity.x;
+                if (movement != 0 && Mathf.Sign(movement) != Mathf.Sign(currentX))
+                {
+                    float deceleration = 12.5f;
+                    float newX = Mathf.MoveTowards(currentX, 0, deceleration * Time.fixedDeltaTime);
+                    rb.velocity = new Vector3(newX, rb.velocity.y, 0f);
+                }
             }
         }
     }
@@ -225,4 +236,65 @@ public class PlayerMovement : MonoBehaviour
             inputManager.OnInput -= HandleInput;
         }
     }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // 플레이어/분신이 벽에 막힌 경우 분신/플레이어의 움직임 제한
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player가 wall에 접촉중인 경우
+        {
+            GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
+            if (mimic != null)
+            {
+                var mimicMovement = mimic.GetComponent<PlayerMovement>();
+                if ((mimicMovement != null))
+                {
+                    mimicMovement.rb.velocity = Vector2.zero;
+                    mimicMovement.canMove = false;
+                }
+            }
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimic이 wall에 접촉중인 경우
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                var playerMovement = player.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    playerMovement.rb.velocity = Vector2.zero;
+                    playerMovement.canMove = false;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // 벽에서 떨어진 경우 제한 해제
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player가 wall에 접촉중인 경우
+        {
+            GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
+            if (mimic != null)
+            {
+                var mimicMovement = mimic.GetComponent<PlayerMovement>();
+                if ((mimicMovement != null))
+                {
+                    mimicMovement.canMove = true;
+                }
+            }
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimic이 wall에 접촉중인 경우
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                var playerMovement = player.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    playerMovement.canMove = true;
+                }
+            }
+        }
+    }
+
 }
