@@ -9,7 +9,8 @@ public class MirrorGate : MonoBehaviour
     Vector3 enterPosition;
     BoxCollider2D collider;
     SpriteRenderer spRend;
-    AudioSource audioSource;
+    [SerializeField] AudioSource audio_waterfall;
+    [SerializeField] AudioSource audio_ice;
 
     public bool isSolid = false;
     public float soundThreshold = 3f;
@@ -24,10 +25,9 @@ public class MirrorGate : MonoBehaviour
         collider = GetComponent<BoxCollider2D>();
         spRend = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
 
         _defaultSprite = spRend.sprite;
-        audioSource.volume = 0;
+        audio_waterfall.volume = 0;
     }
 
     ///
@@ -56,11 +56,11 @@ public class MirrorGate : MonoBehaviour
 
         // 폭포수 효과음 로직
         distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
-        
+
         if (isSolid || distance > soundThreshold)
-            audioSource.volume = 0;
+            audio_waterfall.volume = 0;
         else
-            audioSource.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
+            audio_waterfall.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -80,6 +80,7 @@ public class MirrorGate : MonoBehaviour
             float offset_x = (other.transform.position.x + moveToOneFrame) - transform.position.x;
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
             Instantiate(mimic, mimicPos, Quaternion.identity);
+            audio_ice.Play();
 
             ChangeState(1);
             //Destroy(this.gameObject);
