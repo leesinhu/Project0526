@@ -3698,7 +3698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2365123293376115106, guid: 279030419e05de248b30a2b3b460ded8, type: 3}
       propertyPath: m_Name
-      value: Waterfall_Prefab (1)
+      value: Gate
       objectReference: {fileID: 0}
     - target: {fileID: 2365123293376115106, guid: 279030419e05de248b30a2b3b460ded8, type: 3}
       propertyPath: m_IsActive
