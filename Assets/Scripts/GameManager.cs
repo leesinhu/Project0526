@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject player;
 
     //Flag
-    public bool screenLimit { get; set; } = false; //ºÐ½ÅÀÌ ½ºÅ©¸° ³Ñ¾î°¡·Á°í ÇÒ ¶§ Á¦ÇÑ.
+    public bool screenLimit { get; set; } = false; //ï¿½Ð½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½Ñ¾î°¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
     public bool wallLimit { get; set; } = false;
 
     //List
@@ -29,14 +29,14 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // Áßº¹ Á¦°Å
+            Destroy(gameObject); // ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // ¾À °£ À¯Áö
+        DontDestroyOnLoad(gameObject); // ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        lastSpawnPoint = spawnPoints[0]; // Ã¹ ¼¼ÀÌºêÆ÷ÀÎÆ® ÀúÀå
+        lastSpawnPoint = spawnPoints[0]; // Ã¹ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 
         player = Resources.Load<GameObject>("Prefab/Player_Penguin");
 
@@ -49,10 +49,11 @@ public class GameManager : MonoBehaviour
         }
 
         Transform parent_gates = GameObject.Find("Gates").transform;
-        foreach(Transform gate in parent_gates)
+        foreach (Transform gate in parent_gates)
         {
             MirrorGate temp = gate.GetComponent<MirrorGate>();
             gates.Add(temp);
+            temp.playerPosition = GameObject.FindWithTag("Player").transform;
         }
     }
 
@@ -93,6 +94,8 @@ public class GameManager : MonoBehaviour
         foreach (MirrorGate gate in gates)
         {
             if (gate.isSolid) gate.ChangeState(0);
+            gate.playerPosition = GameObject.FindWithTag("Player").transform;
+
         }
     }
 }

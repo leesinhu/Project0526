@@ -5,7 +5,7 @@ using UnityEngine;
 public class MirrorGate : MonoBehaviour
 {
     [SerializeField] GameObject mimic;
-    [SerializeField] private Transform playerPosition;
+    [HideInInspector] public Transform playerPosition;
     Vector3 enterPosition;
     BoxCollider2D collider;
     SpriteRenderer spRend;
@@ -17,9 +17,9 @@ public class MirrorGate : MonoBehaviour
 
     private float distance;
 
-    [SerializeField] Sprite solidSprite;  //��ü�� ���� ��������Ʈ
+    [SerializeField] Sprite solidSprite;  //????? ???? ?????????
     Animator anim;                        // Animator
-    Sprite _defaultSprite;                // �⺻���¿� ��������Ʈ
+    Sprite _defaultSprite;                // ?????��? ?????????
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();
@@ -31,13 +31,13 @@ public class MirrorGate : MonoBehaviour
     }
 
     ///
-    /// ���� �̹��� ���� �߰� 
+    /// ???? ????? ???? ??? 
     ///
     private void Update()
     {
         if (isSolid)
         {
-            // solid ������ ��: �ִϸ��̼� ���� ��������Ʈ ��ü
+            // solid ?????? ??: ??????? ???? ????????? ???
             if (anim != null && anim.enabled)
                 anim.enabled = false;
 
@@ -46,7 +46,7 @@ public class MirrorGate : MonoBehaviour
         }
         else
         {
-            // non-solid ������ ��: �ִϸ��̼� Ű�� �������
+            // non-solid ?????? ??: ??????? ??? ???????
             if (anim != null && !anim.enabled)
                 anim.enabled = true;
 
@@ -54,7 +54,7 @@ public class MirrorGate : MonoBehaviour
                 spRend.sprite = _defaultSprite;
         }
 
-        // ������ ȿ���� ����
+        // ?????? ????? ????
         if (playerPosition != null)
         {
             distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
