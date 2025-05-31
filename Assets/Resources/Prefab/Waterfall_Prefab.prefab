@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &542915459380303356
 Transform:
   m_ObjectHideFlags: 0
@@ -103,6 +103,7 @@ MonoBehaviour:
   mimic: {fileID: 8534834715289115921, guid: deb0537b66352ba4c911e9ecc2811d36, type: 3}
   playerPosition: {fileID: 0}
   isSolid: 0
+  soundThreshold: 3
   solidSprite: {fileID: 21300000, guid: ea962f7b69f3bdf43997c0d9ace453e4, type: 3}
 --- !u!61 &2615327516179246717
 BoxCollider2D:
@@ -181,7 +182,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 80fd89f37abb95b42bda6200b43fe064, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1

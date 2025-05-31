@@ -5,12 +5,16 @@ using UnityEngine;
 public class MirrorGate : MonoBehaviour
 {
     [SerializeField] GameObject mimic;
+    [SerializeField] private Transform playerPosition;
     Vector3 enterPosition;
     BoxCollider2D collider;
     SpriteRenderer spRend;
-    [SerializeField] private Transform playerPosition;
+    AudioSource audioSource;
 
     public bool isSolid = false;
+    public float soundThreshold = 3f;
+
+    private float distance;
 
     [SerializeField] Sprite solidSprite;  //교체할 얼음 스프라이트
     Animator anim;                        // Animator
@@ -20,8 +24,10 @@ public class MirrorGate : MonoBehaviour
         collider = GetComponent<BoxCollider2D>();
         spRend = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         _defaultSprite = spRend.sprite;
+        audioSource.volume = 0;
     }
 
     ///
@@ -47,6 +53,14 @@ public class MirrorGate : MonoBehaviour
             if (spRend.sprite != _defaultSprite)
                 spRend.sprite = _defaultSprite;
         }
+
+        // 폭포수 효과음 로직
+        distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
+        
+        if (isSolid || distance > soundThreshold)
+            audioSource.volume = 0;
+        else
+            audioSource.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -59,7 +73,7 @@ public class MirrorGate : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             PlayerMovement player = other.GetComponent<PlayerMovement>();
             float moveToOneFrame = (player.movement * player.moveSpeed) * Time.fixedDeltaTime;
@@ -74,7 +88,7 @@ public class MirrorGate : MonoBehaviour
 
     public void ChangeState(int i)
     {
-        if(i == 1)
+        if (i == 1)
         {
             isSolid = true;
             collider.isTrigger = false;
@@ -87,7 +101,7 @@ public class MirrorGate : MonoBehaviour
             isSolid = false;
             collider.isTrigger = true;
             Color color = spRend.color;
-            color.a = 100f/255f;
+            color.a = 100f / 255f;
             spRend.color = color;
         }
     }
