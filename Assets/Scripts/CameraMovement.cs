@@ -9,23 +9,35 @@ public class CameraMovement : MonoBehaviour
     public float followOffsetY = 1.5f; // Y축 데드존 거리
     public float smoothSpeed = 5f;   // 따라가는 속도
 
+    public bool isCutScene;
+
     private void Awake()
     {
         target = GameObject.Find("Player").transform;
     }
     private void Start()
     {
-       /* Vector3 cameraPos = transform.position;
-        Vector3 targetPos = target.position;
-        cameraPos.x = targetPos.x;
-        float yDistance = targetPos.y - cameraPos.y;
-        cameraPos.z = -10f;
-        transform.position = cameraPos;*/
+        isCutScene = false;
+        /* Vector3 cameraPos = transform.position;
+         Vector3 targetPos = target.position;
+         cameraPos.x = targetPos.x;
+         float yDistance = targetPos.y - cameraPos.y;
+         cameraPos.z = -10f;
+         transform.position = cameraPos;*/
     }
 
     void Update()
     {
-        if(target != null)
+        // // 테스트코드
+        // if (Input.GetKeyDown(KeyCode.F1))
+        // {
+        //     StartCameraCutScene(new Vector3(12.8f, 0f, 0));
+        // }
+
+        if (isCutScene)
+            return;
+
+        if (target != null)
         {
             Vector3 cameraPos = transform.position;
             Vector3 targetPos = target.position;
@@ -48,5 +60,31 @@ public class CameraMovement : MonoBehaviour
         {
             target = GameObject.FindWithTag("Player")?.transform;
         }
+    }
+
+    public void StartCameraCutScene(Vector3 targetPosition)
+    {
+        targetPosition.z = -10;
+        StartCoroutine(CameraCutScene(targetPosition));
+    }
+
+    private IEnumerator CameraCutScene(Vector3 targetPosition)
+    {
+        isCutScene = true;
+
+        Vector3 cameraPos = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1f)
+        {
+            transform.position = Vector3.Lerp(cameraPos, targetPosition, elapsedTime / 1f);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 0.7초 대기 후 원래위치로
+        yield return new WaitForSeconds(0.7f);
+        transform.position = targetPosition;
+        isCutScene = false;
     }
 }
