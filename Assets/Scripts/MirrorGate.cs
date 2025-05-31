@@ -17,9 +17,9 @@ public class MirrorGate : MonoBehaviour
 
     private float distance;
 
-    [SerializeField] Sprite solidSprite;  //±³Ã¼ÇÒ ¾óÀ½ ½ºÇÁ¶óÀÌÆ®
+    [SerializeField] Sprite solidSprite;  //ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     Animator anim;                        // Animator
-    Sprite _defaultSprite;                // ±âº»»óÅÂ¿ë ½ºÇÁ¶óÀÌÆ®
+    Sprite _defaultSprite;                // ï¿½âº»ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();
@@ -31,13 +31,13 @@ public class MirrorGate : MonoBehaviour
     }
 
     ///
-    /// ¾óÀ½ ÀÌ¹ÌÁö Àû¿ë Ãß°¡ 
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 
     ///
     private void Update()
     {
         if (isSolid)
         {
-            // solid »óÅÂÀÏ ¶§: ¾Ö´Ï¸ÞÀÌ¼Ç ²ô°í ½ºÇÁ¶óÀÌÆ® ±³Ã¼
+            // solid ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½: ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½Ã¼
             if (anim != null && anim.enabled)
                 anim.enabled = false;
 
@@ -46,7 +46,7 @@ public class MirrorGate : MonoBehaviour
         }
         else
         {
-            // non-solid »óÅÂÀÏ ¶§: ¾Ö´Ï¸ÞÀÌ¼Ç Å°°í ¿ø·¡´ë·Î
+            // non-solid ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½: ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (anim != null && !anim.enabled)
                 anim.enabled = true;
 
@@ -54,7 +54,7 @@ public class MirrorGate : MonoBehaviour
                 spRend.sprite = _defaultSprite;
         }
 
-        // ÆøÆ÷¼ö È¿°úÀ½ ·ÎÁ÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
 
         if (isSolid || distance > soundThreshold)
@@ -80,6 +80,7 @@ public class MirrorGate : MonoBehaviour
             float offset_x = (other.transform.position.x + moveToOneFrame) - transform.position.x;
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
             PlayerMovement _mimic = Instantiate(mimic, mimicPos, Quaternion.identity).GetComponent<PlayerMovement>();
+            gameObject.tag = "Untagged";
             _mimic.hasArrow = player.hasArrow;
             _mimic.hasTorch = player.hasTorch;
 

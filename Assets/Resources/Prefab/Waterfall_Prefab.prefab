@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8909005980383335412}
   m_Layer: 0
   m_Name: Waterfall_Prefab
-  m_TagString: Untagged
+  m_TagString: Waterfall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
