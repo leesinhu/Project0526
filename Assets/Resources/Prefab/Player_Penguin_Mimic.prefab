@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 7234834948194208957}
   m_Layer: 8
   m_Name: Player_Penguin_Mimic
-  m_TagString: Player
+  m_TagString: Mimic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
