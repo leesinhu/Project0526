@@ -8,6 +8,7 @@ public class MirrorGate : MonoBehaviour
     Vector3 enterPosition;
     BoxCollider2D collider;
     SpriteRenderer spRend;
+    [SerializeField] private Transform playerPosition;
 
     public bool isSolid = false;
 
