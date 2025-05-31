@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     float coyoteTimeCounter = 0f;
     float jumpBufferCounter = 0f;
 
+    //화살
+    [SerializeField] private Arrow Arrow;
+
     public InputManager inputManager { get; set; }
     public float movement { get; set; }
     public bool jumpFlag { get; set; }
@@ -69,6 +72,14 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
+
+        // 화살 발사
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Debug.Log("Arrow");
+            Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, -0.5f, 0f);
+            Instantiate(Arrow, spawnPos, Quaternion.identity).SetArrow(!spriteRenderer.flipX);
+        }
     }
 
     private void FixedUpdate()
@@ -98,11 +109,11 @@ public class PlayerMovement : MonoBehaviour
         // 좌우 이동
         if (isGrounded)
         {
-            if(!GameManager.Instance.screenLimit)
+            if (!GameManager.Instance.screenLimit)
             {
                 rb.velocity = new Vector3(movement * moveSpeed, rb.velocity.y, 0f);
             }
-             
+
         }
         else
         {
@@ -121,8 +132,8 @@ public class PlayerMovement : MonoBehaviour
         switch (args.inputType)
         {
             case InputType.MoveLeft:
-                if(!isMimic)
-                {   
+                if (!isMimic)
+                {
                     movement = -1;
                 }
                 else
@@ -132,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
                     Vector2 temp = new Vector3(offset_x, transform.position.y);
 
                     Vector3 viewPos = Camera.main.WorldToViewportPoint(temp);
-                    if(viewPos.x >= 0.9865f)
+                    if (viewPos.x >= 0.9865f)
                     {
                         GameManager.Instance.screenLimit = true;
                         break;
@@ -182,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
-        if(!isMimic)
+        if (!isMimic)
         {
             //전체(player + 모든 mimic)
             GameManager.Instance.DestroyObj();

@@ -179,6 +179,7 @@ MonoBehaviour:
     m_Bits: 512
   coyoteTimeDuration: 0.15
   jumpBufferDuration: 0.15
+  Arrow: {fileID: -5985168966316563722, guid: 5afdce3368f1c464a9ec5a7fc3109d28, type: 3}
 --- !u!95 &1061739313511499340
 Animator:
   serializedVersion: 5
