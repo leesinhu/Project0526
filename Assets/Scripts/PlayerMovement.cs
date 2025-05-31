@@ -208,6 +208,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Waterfall")
             rb.gravityScale = 2;
+
+        //세이브 포인트 도달 시 갱신
+        if (collision.CompareTag("Respawn"))
+        {
+            Debug.Log("세이브포인트 도달!");
+            GameManager.Instance.lastSpawnPoint = collision.gameObject.transform;
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

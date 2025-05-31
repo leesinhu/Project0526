@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public InputManager inputManager;
     public float moveSpeed;
     public float jumpForce;
+
+    public Transform lastSpawnPoint;
     [SerializeField] Vector2 gravityScale;
     [SerializeField] GameObject player;
 
@@ -33,6 +35,10 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject); // 씬 간 유지
+
+        lastSpawnPoint = spawnPoints[0]; // 첫 세이브포인트 저장
+
+        player = Resources.Load<GameObject>("Prefab/Player_Penguin");
 
         Physics2D.gravity = gravityScale;
 
@@ -70,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Respawn()
     {
+        GameObject newPlayer = player;
         foreach (GameObject obj in units)
         {
             Destroy(obj);
@@ -78,7 +85,7 @@ public class GameManager : MonoBehaviour
         units.Clear();
 
         yield return new WaitForSeconds(1f);
-        Instantiate(player, spawnPoints[0].position, Quaternion.identity);
+        Instantiate(newPlayer, lastSpawnPoint.position, Quaternion.identity);
         foreach(GameObject obj in obstacles)
         {
             if (!obj.activeSelf) obj.SetActive(true);

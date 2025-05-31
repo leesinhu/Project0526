@@ -55,8 +55,10 @@ public class MirrorGate : MonoBehaviour
         }
 
         // ������ ȿ���� ����
-        distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
-
+        if (playerPosition != null)
+        {
+            distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
+        }
         if (isSolid || distance > soundThreshold)
             audio_waterfall.volume = 0;
         else
@@ -110,4 +112,5 @@ public class MirrorGate : MonoBehaviour
             spRend.color = color;
         }
     }
+
 }
