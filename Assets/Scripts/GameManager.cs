@@ -98,4 +98,19 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    // 디버깅용 개발자 리스폰
+    public void RespawnAtIndex(int index)
+    {
+        if (index < 0 || index >= spawnPoints.Count)
+        {
+            Debug.LogWarning("Invalid respawn index");
+            return;
+        }
+
+        lastSpawnPoint = spawnPoints[index];
+        // 기존 플레이어 및 유닛 제거 후 리스폰 시작
+        StartCoroutine(Respawn());
+    }
+
 }
