@@ -79,7 +79,10 @@ public class MirrorGate : MonoBehaviour
             float moveToOneFrame = (player.movement * player.moveSpeed) * Time.fixedDeltaTime;
             float offset_x = (other.transform.position.x + moveToOneFrame) - transform.position.x;
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
-            Instantiate(mimic, mimicPos, Quaternion.identity);
+            PlayerMovement _mimic = Instantiate(mimic, mimicPos, Quaternion.identity).GetComponent<PlayerMovement>();
+            _mimic.hasArrow = player.hasArrow;
+            _mimic.hasTorch = player.hasTorch;
+
             audio_ice.Play();
 
             ChangeState(1);

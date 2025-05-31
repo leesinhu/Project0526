@@ -27,7 +27,11 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+        if (collision.gameObject.tag == "Player")
+            collision.gameObject.GetComponent<PlayerMovement>().Die();
+
+        if (collision.gameObject.tag != "Item")
+            Destroy(gameObject);
     }
 
 }
