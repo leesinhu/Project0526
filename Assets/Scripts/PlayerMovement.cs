@@ -253,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player가 wall에 접촉중인 경우
         {
             GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
-            if (mimic != null)
+            if (mimic != null && this.canMove)
             {
                 var mimicMovement = mimic.GetComponent<PlayerMovement>();
                 if ((mimicMovement != null))
@@ -269,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
             if (player != null)
             {
                 var playerMovement = player.GetComponent<PlayerMovement>();
-                if (playerMovement != null)
+                if (playerMovement != null && this.canMove)
                 {
                     playerMovement.rb.velocity = Vector2.zero;
                     playerMovement.canMove = false;
