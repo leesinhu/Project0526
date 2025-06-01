@@ -207,19 +207,22 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Waterfall")
-            rb.gravityScale = 2;
+            rb.gravityScale = 10;
 
         //세이브 포인트 도달 시 갱신
         if (collision.CompareTag("Respawn"))
         {
-            Debug.Log("세이브포인트 도달!");
             GameManager.Instance.lastSpawnPoint = collision.gameObject.transform;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Waterfall")
+        {
+            collision.gameObject.tag = "Untagged";
             rb.gravityScale = 1;
+        }
+            
     }
 
     public void Die()

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject player;
 
     //Flag
-    public bool screenLimit { get; set; } = false; //�н��� ��ũ�� �Ѿ���� �� �� ����.
+    public bool screenLimit { get; set; } = false; 
     public bool wallLimit { get; set; } = false;
 
     //List
@@ -29,14 +29,14 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); // �ߺ� ����
+            Destroy(gameObject); 
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // �� �� ����
+        DontDestroyOnLoad(gameObject); 
 
-        lastSpawnPoint = spawnPoints[0]; // ù ���̺�����Ʈ ����
+        lastSpawnPoint = spawnPoints[0]; 
 
         player = Resources.Load<GameObject>("Prefab/Player_Penguin");
 

@@ -82,7 +82,6 @@ public class MirrorGate : MonoBehaviour
             float offset_x = (other.transform.position.x + moveToOneFrame) - transform.position.x;
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
             PlayerMovement _mimic = Instantiate(mimic, mimicPos, Quaternion.identity).GetComponent<PlayerMovement>();
-            gameObject.tag = "Untagged";
             _mimic.hasArrow = player.hasArrow;
             _mimic.hasTorch = player.hasTorch;
 
@@ -108,7 +107,7 @@ public class MirrorGate : MonoBehaviour
             isSolid = false;
             collider.isTrigger = true;
             Color color = spRend.color;
-            color.a = 100f / 255f;
+            color.a = 175f / 255f;
             spRend.color = color;
         }
     }
