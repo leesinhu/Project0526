@@ -268,3 +268,7 @@ MonoBehaviour:
     m_Bits: 512
   coyoteTimeDuration: 0.15
   jumpBufferDuration: 0.15
+  hasArrow: 0
+  hasTorch: 0
+  Arrow: {fileID: 0}
+  canMove: 0
