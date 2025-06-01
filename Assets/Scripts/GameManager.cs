@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
             {
                 obstacles[i].Add(child.gameObject);
             }
-        }
-            /*gates.Add(new List<MirrorGate>());
+
+            gates.Add(new List<MirrorGate>());
 
             string gateName = $"Gates{i + 1}";
             GameObject parentObj2 = GameObject.Find(gateName);
@@ -67,10 +67,8 @@ public class GameManager : MonoBehaviour
                 MirrorGate temp = gate.GetComponent<MirrorGate>();
                 gates[i].Add(temp);
                 temp.playerPosition = GameObject.FindWithTag("Player").transform;
-            }*/
-        
-
-        
+            }
+        }
     }
 
     private void Update()
@@ -114,15 +112,20 @@ public class GameManager : MonoBehaviour
             {
                 if (!obj.activeSelf) obj.SetActive(true);
             }
-        }  
-            /*// 폭포수 리스폰
+        }
+
+        for (int i = checkpointIndex; i < gates.Count; i++)
+        {
+            // 폭포수 리스폰
             foreach (MirrorGate gate in gates[i])
             {
                 if (gate.isSolid) gate.ChangeState(0);
                 gate.playerPosition = GameObject.FindWithTag("Player").transform;
 
-            }*/
-        
+            }  
+        }
+
+
 
     }
 
