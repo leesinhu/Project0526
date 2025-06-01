@@ -29,7 +29,7 @@ public class PlayerFoot : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         player.isGrounded = groundContacts > 0;
     }

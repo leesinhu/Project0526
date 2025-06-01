@@ -107,8 +107,7 @@ public class PlayerMovement : MonoBehaviour
         }
         //
 
-
-        if (jumpFlag && isGrounded && rb.velocity.y == 0)
+        if (jumpFlag && isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -222,7 +221,32 @@ public class PlayerMovement : MonoBehaviour
             collision.gameObject.tag = "Untagged";
             rb.gravityScale = 1;
         }
-            
+
+        // 벽에서 떨어진 경우 제한 해제
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player가 wall에 접촉중인 경우
+        {
+            GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
+            if (mimic != null)
+            {
+                var mimicMovement = mimic.GetComponent<PlayerMovement>();
+                if ((mimicMovement != null))
+                {
+                    mimicMovement.canMove = true;
+                }
+            }
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimic이 wall에 접촉중인 경우
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                var playerMovement = player.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    playerMovement.canMove = true;
+                }
+            }
+        }
     }
 
     public void Die()
@@ -247,7 +271,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         // 플레이어/분신이 벽에 막힌 경우 분신/플레이어의 움직임 제한
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player가 wall에 접촉중인 경우
@@ -273,35 +297,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     playerMovement.rb.velocity = Vector2.zero;
                     playerMovement.canMove = false;
-                }
-            }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        // 벽에서 떨어진 경우 제한 해제
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player가 wall에 접촉중인 경우
-        {
-            GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
-            if (mimic != null)
-            {
-                var mimicMovement = mimic.GetComponent<PlayerMovement>();
-                if ((mimicMovement != null))
-                {
-                    mimicMovement.canMove = true;
-                }
-            }
-        }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimic이 wall에 접촉중인 경우
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                var playerMovement = player.GetComponent<PlayerMovement>();
-                if (playerMovement != null)
-                {
-                    playerMovement.canMove = true;
                 }
             }
         }

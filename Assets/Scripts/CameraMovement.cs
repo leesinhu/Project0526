@@ -45,8 +45,8 @@ public class CameraMovement : MonoBehaviour
             float xDistance = targetPos.x - cameraPos.x;
             if (Mathf.Abs(xDistance) > followOffsetX)
             {
-                cameraPos.x = targetPos.x - followOffsetX * Mathf.Sign(xDistance);
-            }
+                    cameraPos.x = targetPos.x - followOffsetX * Mathf.Sign(xDistance);
+            }  
 
             float yDistance = targetPos.y - cameraPos.y;
             if (Mathf.Abs(yDistance) > followOffsetY)
@@ -60,6 +60,13 @@ public class CameraMovement : MonoBehaviour
         {
             target = GameObject.FindWithTag("Player")?.transform;
         }
+    }
+
+    void LateUpdate()
+    {
+        Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -4, 1000);
+        transform.position = pos;
     }
 
     public void StartCameraCutScene(Vector3 targetPosition)

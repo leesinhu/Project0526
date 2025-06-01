@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1061739313511499340}
   m_Layer: 8
   m_Name: Player_Mimic
-  m_TagString: Player
+  m_TagString: Mimic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
