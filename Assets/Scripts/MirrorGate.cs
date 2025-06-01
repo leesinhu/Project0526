@@ -62,7 +62,12 @@ public class MirrorGate : MonoBehaviour
         if (isSolid || distance > soundThreshold)
             audio_waterfall.volume = 0;
         else
-            audio_waterfall.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
+        {
+            float t = Mathf.Clamp01(1f - (distance / soundThreshold));
+            audio_waterfall.volume = Mathf.Pow(t, 2);
+            //audio_waterfall.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
+        }
+            
     }
 
     private void OnTriggerEnter2D(Collider2D other)

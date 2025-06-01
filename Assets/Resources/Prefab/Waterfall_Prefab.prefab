@@ -106,7 +106,7 @@ MonoBehaviour:
   audio_waterfall: {fileID: 748096774951662452}
   audio_ice: {fileID: 8909005980383335412}
   isSolid: 0
-  soundThreshold: 7
+  soundThreshold: 6
   solidSprite: {fileID: 21300000, guid: ea962f7b69f3bdf43997c0d9ace453e4, type: 3}
 --- !u!61 &2615327516179246717
 BoxCollider2D:
@@ -280,7 +280,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3aeaeba2346e43f46a62a4ccc5a45bd5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 33c04bb61839afa4194008d30b1e115b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
