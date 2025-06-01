@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float jumpForce;
 
     public Transform lastSpawnPoint;
+    public int checkpointCount = 3;
     [SerializeField] Vector2 gravityScale;
     [SerializeField] GameObject player;
 
@@ -21,8 +22,8 @@ public class GameManager : MonoBehaviour
 
     //List
     [HideInInspector] public List<GameObject> units { get; set; } = new List<GameObject>();
-    [HideInInspector] public List<GameObject> obstacles { get; set; } = new List<GameObject>();
-    [HideInInspector] public List<MirrorGate> gates { get; set; } = new List<MirrorGate>();
+    [HideInInspector] public List<List<GameObject>> obstacles { get; set; } = new List<List<GameObject>>();
+    [HideInInspector] public List<List<MirrorGate>> gates { get; set; } = new List<List<MirrorGate>>();
     public List<Transform> spawnPoints = new List<Transform>();
 
     void Awake()
@@ -42,19 +43,34 @@ public class GameManager : MonoBehaviour
 
         Physics2D.gravity = gravityScale;
 
-        Transform parent_obstacles = GameObject.Find("Obstacles").transform;
-        foreach(Transform child in parent_obstacles)
+        // 스폰 포인트에 따라 소속된 오브젝트를 obstacles, gates 2차원 구조에 초기화
+        for (int i = 0; i < spawnPoints.Count; i++)
         {
-            obstacles.Add(child.gameObject);
-        }
+            obstacles.Add(new List<GameObject>());
 
-        Transform parent_gates = GameObject.Find("Gates").transform;
-        foreach (Transform gate in parent_gates)
-        {
-            MirrorGate temp = gate.GetComponent<MirrorGate>();
-            gates.Add(temp);
-            temp.playerPosition = GameObject.FindWithTag("Player").transform;
+            string obsName = $"Obstacles{i + 1}";
+            GameObject parentObj = GameObject.Find(obsName);
+
+            Transform parent_obstacles = parentObj.transform;
+            foreach (Transform child in parent_obstacles)
+            {
+                obstacles[i].Add(child.gameObject);
+            }
         }
+            /*gates.Add(new List<MirrorGate>());
+
+            string gateName = $"Gates{i + 1}";
+            GameObject parentObj2 = GameObject.Find(gateName);
+            Transform parent_gates = parentObj2.transform;
+            foreach (Transform gate in parent_gates)
+            {
+                MirrorGate temp = gate.GetComponent<MirrorGate>();
+                gates[i].Add(temp);
+                temp.playerPosition = GameObject.FindWithTag("Player").transform;
+            }*/
+        
+
+        
     }
 
     private void Update()
@@ -86,17 +102,28 @@ public class GameManager : MonoBehaviour
         units.Clear();
 
         yield return new WaitForSeconds(1f);
-        Instantiate(newPlayer, lastSpawnPoint.position, Quaternion.identity);
-        foreach(GameObject obj in obstacles)
-        {
-            if (!obj.activeSelf) obj.SetActive(true);
-        }
-        foreach (MirrorGate gate in gates)
-        {
-            if (gate.isSolid) gate.ChangeState(0);
-            gate.playerPosition = GameObject.FindWithTag("Player").transform;
+        Instantiate(newPlayer, lastSpawnPoint.position, Quaternion.identity); // 플레이어 리스폰
 
-        }
+        
+        int checkpointIndex = spawnPoints.IndexOf(lastSpawnPoint);
+
+        for (int i = checkpointIndex; i < obstacles.Count; i++)
+        {
+            // 장애물 리스폰
+            foreach (GameObject obj in obstacles[i])
+            {
+                if (!obj.activeSelf) obj.SetActive(true);
+            }
+        }  
+            /*// 폭포수 리스폰
+            foreach (MirrorGate gate in gates[i])
+            {
+                if (gate.isSolid) gate.ChangeState(0);
+                gate.playerPosition = GameObject.FindWithTag("Player").transform;
+
+            }*/
+        
+
     }
 
     // 디버깅용 개발자 리스폰
