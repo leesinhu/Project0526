@@ -90,8 +90,8 @@ public class CameraMovement : MonoBehaviour
         }
 
         // 0.7초 대기 후 원래위치로
-        yield return new WaitForSeconds(0.7f);
-        transform.position = targetPosition;
+        /*yield return new WaitForSeconds(0.7f);
+        transform.position = targetPosition;*/
         isCutScene = false;
     }
 }

@@ -84,9 +84,8 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // 화살 발사
-        if (hasArrow && Input.GetKeyDown(KeyCode.LeftShift))
+        if (hasArrow && Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("Arrow");
             Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, -0.5f, 0f);
             Instantiate(Arrow, spawnPos, Quaternion.identity).SetArrow(!spriteRenderer.flipX);
         }
@@ -118,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
         // 좌우 이동
         if(canMove)
         { 
-            if (isGrounded)
+            if (isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
             {
                 if(!GameManager.Instance.screenLimit)
                 {
@@ -282,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
                 var mimicMovement = mimic.GetComponent<PlayerMovement>();
                 if ((mimicMovement != null))
                 {
-                    mimicMovement.rb.velocity = Vector2.zero;
+                    mimicMovement.rb.velocity = new Vector2(0f, mimicMovement.rb.velocity.y);
                     mimicMovement.canMove = false;
                 }
             }
@@ -295,11 +294,10 @@ public class PlayerMovement : MonoBehaviour
                 var playerMovement = player.GetComponent<PlayerMovement>();
                 if (playerMovement != null && this.canMove)
                 {
-                    playerMovement.rb.velocity = Vector2.zero;
+                    playerMovement.rb.velocity = new Vector2(0f, playerMovement.rb.velocity.y);
                     playerMovement.canMove = false;
                 }
             }
         }
     }
-
 }
