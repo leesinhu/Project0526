@@ -30315,7 +30315,7 @@ PrefabInstance:
       objectReference: {fileID: 1244657869434155766, guid: 950dea37e91bf7940a9dfa2974a3cf1e, type: 3}
     - target: {fileID: 7089301534324435498, guid: 279030419e05de248b30a2b3b460ded8, type: 3}
       propertyPath: maxVolume
-      value: 0.6
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7089301534324435498, guid: 279030419e05de248b30a2b3b460ded8, type: 3}
       propertyPath: playerPosition
@@ -60838,7 +60838,7 @@ PrefabInstance:
       objectReference: {fileID: 846355524}
     - target: {fileID: 7089301534324435498, guid: 279030419e05de248b30a2b3b460ded8, type: 3}
       propertyPath: soundThreshold
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

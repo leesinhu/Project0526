@@ -83,6 +83,11 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         Physics2D.gravity = gravityScale;
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            StartCoroutine(Respawn());
+        }
     }
     public void DestroyObj(GameObject targetObj = null)
     {
@@ -131,11 +136,11 @@ public class GameManager : MonoBehaviour
                 if (gate.isSolid) gate.ChangeState(0);
                 gate.gameObject.tag = "Waterfall";
                 gate.playerPosition = GameObject.FindWithTag("Player").transform;
-
             }  
         }
 
-
+        screenLimit = false;
+        wallLimit = false;
 
     }
 
