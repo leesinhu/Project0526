@@ -6,6 +6,7 @@ using System;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] bool isMimic = false;
+    public bool isReverse = false;
 
     public float moveSpeed { get; set; } = 3.5f;
     public float jumpForce { get; set; } = 5f;
@@ -149,7 +150,10 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {   //Mimic
-                    float moveToOneFrame = (1 * moveSpeed) * Time.fixedDeltaTime;
+                    if (isReverse) movement = 1;
+                    else movement = -1;
+
+                    float moveToOneFrame = (movement * moveSpeed) * Time.fixedDeltaTime;
                     float offset_x = transform.position.x + moveToOneFrame;
                     Vector2 temp = new Vector3(offset_x, transform.position.y);
 
@@ -163,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         GameManager.Instance.screenLimit = false;
                     }
-                    movement = 1;
+                    ///movement = 1;
                 }
                 break;
             case InputType.MoveRight:
@@ -173,7 +177,10 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {   //Mimic
-                    float moveToOneFrame = (-1 * moveSpeed) * Time.fixedDeltaTime;
+                    if (isReverse) movement = -1;
+                    else movement = 1;
+
+                    float moveToOneFrame = (movement * moveSpeed) * Time.fixedDeltaTime;
                     float offset_x = transform.position.x + moveToOneFrame;
                     Vector2 temp = new Vector3(offset_x, transform.position.y);
 
@@ -187,7 +194,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         GameManager.Instance.screenLimit = false;
                     }
-                    movement = -1;
+                    //movement = -1;
                 }
                 break;
             case InputType.MoveStop:

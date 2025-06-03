@@ -11,6 +11,7 @@ public class Obstacle : MonoBehaviour
             PlayerMovement unit = collision.GetComponent<PlayerMovement>();
             if(unit != null)
             {
+                GameManager.Instance.PrintSoundEffect("melt");
                 unit.enabled = false;
                 unit.Die();
                 this.gameObject.SetActive(false);

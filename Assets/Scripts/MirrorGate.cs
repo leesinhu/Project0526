@@ -9,8 +9,15 @@ public class MirrorGate : MonoBehaviour
     Vector3 enterPosition;
     BoxCollider2D collider;
     SpriteRenderer spRend;
+
+    //Sound
     [SerializeField] AudioSource audio_waterfall;
     [SerializeField] AudioSource audio_ice;
+    [SerializeField] [Range(0f, 1f)] float maxVolume = 1f;
+
+    //카메라 이동 여부
+    [SerializeField] bool cameraChange;
+    [SerializeField] Vector2 cameraChangePos;
 
     public bool isSolid = false;
     public float soundThreshold = 3f;
@@ -64,7 +71,7 @@ public class MirrorGate : MonoBehaviour
         else
         {
             float t = Mathf.Clamp01(1f - (distance / soundThreshold));
-            audio_waterfall.volume = Mathf.Pow(t, 2);
+            audio_waterfall.volume = Mathf.Pow(t, 2) * maxVolume;
             //audio_waterfall.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
         }
             
@@ -80,19 +87,26 @@ public class MirrorGate : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Mimic"))
         {
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            float moveToOneFrame = (player.movement * player.moveSpeed) * Time.fixedDeltaTime;
+            PlayerMovement unit = other.GetComponent<PlayerMovement>();
+            float moveToOneFrame = (unit.movement * unit.moveSpeed) * Time.fixedDeltaTime;
             float offset_x = (other.transform.position.x + moveToOneFrame) - transform.position.x;
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
             PlayerMovement _mimic = Instantiate(mimic, mimicPos, Quaternion.identity).GetComponent<PlayerMovement>();
-            _mimic.hasArrow = player.hasArrow;
-            _mimic.hasTorch = player.hasTorch;
+            _mimic.isReverse = !unit.isReverse;
+            _mimic.hasArrow = unit.hasArrow;
+            _mimic.hasTorch = unit.hasTorch;
 
             audio_ice.Play();
 
             ChangeState(1);
+
+            if(other.CompareTag("Player") && cameraChange)
+            {
+                CameraMovement camera = Camera.main.GetComponent<CameraMovement>();
+                camera.StartCameraCutScene(cameraChangePos);
+            }
             //Destroy(this.gameObject);
         }
     }
@@ -106,6 +120,10 @@ public class MirrorGate : MonoBehaviour
             Color color = spRend.color;
             color.a = 1f;
             spRend.color = color;
+
+            //Wall
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
         }
         else //0
         {
@@ -114,6 +132,10 @@ public class MirrorGate : MonoBehaviour
             Color color = spRend.color;
             color.a = 175f / 255f;
             spRend.color = color;
+
+            //Wall
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 

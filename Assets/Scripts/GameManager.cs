@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<List<MirrorGate>> gates { get; set; } = new List<List<MirrorGate>>();
     public List<Transform> spawnPoints = new List<Transform>();
 
+    //Dictionary
+    Dictionary<string, AudioSource> soundEffects = new Dictionary<string, AudioSource>();
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -68,6 +71,12 @@ public class GameManager : MonoBehaviour
                 gates[i].Add(temp);
                 temp.playerPosition = GameObject.FindWithTag("Player").transform;
             }
+        }
+
+        Transform parent_soundEffect = transform.Find("SoundEffects");
+        foreach(Transform child in parent_soundEffect)
+        {
+            soundEffects.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
         }
     }
 
@@ -120,6 +129,7 @@ public class GameManager : MonoBehaviour
             foreach (MirrorGate gate in gates[i])
             {
                 if (gate.isSolid) gate.ChangeState(0);
+                gate.gameObject.tag = "Waterfall";
                 gate.playerPosition = GameObject.FindWithTag("Player").transform;
 
             }  
@@ -143,4 +153,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Respawn());
     }
 
+    public void PrintSoundEffect(string audioName)
+    {
+        AudioSource audioSource = soundEffects[audioName];
+        audioSource.PlayOneShot(audioSource.clip);
+    }
 }
