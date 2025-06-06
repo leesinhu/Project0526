@@ -7,14 +7,19 @@ public class Arrow : MonoBehaviour
     public float speed = 10f;
     private Vector3 moveDirection;
 
-    private Rigidbody2D rb;
+     private Rigidbody2D rb;
 
     public void SetArrow(bool is_right)
     {
         if (is_right)
+        {
             moveDirection = Vector3.right;
+        }
         else
+        {
             moveDirection = Vector3.left;
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
 
         rb = GetComponent<Rigidbody2D>();
     }
@@ -30,8 +35,7 @@ public class Arrow : MonoBehaviour
         if (collision.gameObject.tag == "Player")
             collision.gameObject.GetComponent<PlayerMovement>().Die();
 
-        if (collision.gameObject.tag != "Item")
+        else if (collision.gameObject.tag != "Item")
             Destroy(gameObject);
     }
-
 }

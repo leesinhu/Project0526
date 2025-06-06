@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     //아이템
     public bool hasArrow = false;
     public bool hasTorch = false;
-    [SerializeField] private Arrow Arrow;
+    [SerializeField] private GameObject Arrow;
 
     public InputManager inputManager { get; set; }
     public float movement { get; set; }
@@ -85,10 +85,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // 화살 발사
-        if (hasArrow && Input.GetKeyDown(KeyCode.A))
+        if (hasArrow && Input.GetKeyDown(KeyCode.LeftControl))
         {
-            Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, -0.5f, 0f);
-            Instantiate(Arrow, spawnPos, Quaternion.identity).SetArrow(!spriteRenderer.flipX);
+            Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, 0.3f, 0f);
+            var arrowInstance = Instantiate(Arrow, spawnPos, Quaternion.identity);
+            arrowInstance.GetComponent<Arrow>().SetArrow(!spriteRenderer.flipX);
+            hasArrow = false;
         }
     }
 
