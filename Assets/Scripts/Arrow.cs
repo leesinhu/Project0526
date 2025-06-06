@@ -7,7 +7,7 @@ public class Arrow : MonoBehaviour
     public float speed = 10f;
     private Vector3 moveDirection;
 
-     private Rigidbody2D rb;
+    private Rigidbody2D rb;
 
     public void SetArrow(bool is_right)
     {
@@ -35,7 +35,6 @@ public class Arrow : MonoBehaviour
         if (collision.gameObject.tag == "Player")
             collision.gameObject.GetComponent<PlayerMovement>().Die();
 
-        else if (collision.gameObject.tag != "Item")
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

@@ -15,7 +15,7 @@ public class MirrorGate : MonoBehaviour
     [SerializeField] AudioSource audio_ice;
     [SerializeField] [Range(0f, 1f)] float maxVolume = 1f;
 
-    //Ä«¸Þ¶ó ÀÌµ¿ ¿©ºÎ
+    //Ä«ï¿½Þ¶ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
     [SerializeField] bool cameraChange;
     [SerializeField] Vector2 cameraChangePos;
 
@@ -26,7 +26,7 @@ public class MirrorGate : MonoBehaviour
 
     [SerializeField] Sprite solidSprite;  //????? ???? ?????????
     Animator anim;                        // Animator
-    Sprite _defaultSprite;                // ?????¢¯? ?????????
+    Sprite _defaultSprite;                // ?????ï¿½ï¿½? ?????????
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();
