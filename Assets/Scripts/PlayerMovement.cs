@@ -258,6 +258,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Àû °³Ã¼¿Í Á¢ÃË ½Ã »ç¸Á
+        GameObject other = collision.gameObject;
+        if(other.CompareTag("Enemy"))
+        {
+            Die();
+        }
+    }
+
     public void Die()
     {
         if (!isMimic)

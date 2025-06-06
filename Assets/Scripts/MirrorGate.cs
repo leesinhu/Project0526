@@ -77,6 +77,15 @@ public class MirrorGate : MonoBehaviour
             
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 얼음벽이 적과 닿으면 파괴됨
+        if (collision.gameObject.CompareTag("Enemy") && isSolid)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
