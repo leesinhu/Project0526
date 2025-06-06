@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
             var arrowInstance = Instantiate(Arrow, spawnPos, Quaternion.identity);
             arrowInstance.GetComponent<Arrow>().SetArrow(!spriteRenderer.flipX);
             hasArrow = false;
+            GameManager.Instance.UpdateArrow(false);
         }
     }
 

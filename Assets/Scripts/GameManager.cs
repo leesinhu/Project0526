@@ -17,14 +17,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject player;
 
     //Flag
-    public bool screenLimit { get; set; } = false; 
+    public bool screenLimit { get; set; } = false;
     public bool wallLimit { get; set; } = false;
+
+    // Canvas
+    [SerializeField] private GameObject arrowIcon;
 
     //List
     [HideInInspector] public List<GameObject> units { get; set; } = new List<GameObject>();
     [HideInInspector] public List<List<GameObject>> obstacles { get; set; } = new List<List<GameObject>>();
     [HideInInspector] public List<List<MirrorGate>> gates { get; set; } = new List<List<MirrorGate>>();
     public List<Transform> spawnPoints = new List<Transform>();
+
 
     //Dictionary
     Dictionary<string, AudioSource> soundEffects = new Dictionary<string, AudioSource>();
@@ -33,14 +37,14 @@ public class GameManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
 
-        lastSpawnPoint = spawnPoints[0]; 
+        lastSpawnPoint = spawnPoints[0];
 
         player = Resources.Load<GameObject>("Prefab/Player_Penguin");
 
@@ -74,17 +78,19 @@ public class GameManager : MonoBehaviour
         }
 
         Transform parent_soundEffect = transform.Find("SoundEffects");
-        foreach(Transform child in parent_soundEffect)
+        foreach (Transform child in parent_soundEffect)
         {
             soundEffects.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
         }
+
+        UpdateArrow(false);
     }
 
     private void Update()
     {
         Physics2D.gravity = gravityScale;
 
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             StartCoroutine(Respawn());
         }
@@ -116,7 +122,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Instantiate(newPlayer, lastSpawnPoint.position, Quaternion.identity); // 플레이어 리스폰
 
-        
+
         int checkpointIndex = spawnPoints.IndexOf(lastSpawnPoint);
 
         for (int i = checkpointIndex; i < obstacles.Count; i++)
@@ -136,7 +142,7 @@ public class GameManager : MonoBehaviour
                 if (gate.isSolid) gate.ChangeState(0);
                 gate.gameObject.tag = "Waterfall";
                 gate.playerPosition = GameObject.FindWithTag("Player").transform;
-            }  
+            }
         }
 
         screenLimit = false;
@@ -162,5 +168,10 @@ public class GameManager : MonoBehaviour
     {
         AudioSource audioSource = soundEffects[audioName];
         audioSource.PlayOneShot(audioSource.clip);
+    }
+
+    public void UpdateArrow(bool hasArrow)
+    {
+        arrowIcon.SetActive(hasArrow);
     }
 }

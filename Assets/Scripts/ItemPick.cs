@@ -10,8 +10,10 @@ public class ItemPick : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            if (isArrow)
+            if (isArrow) {
                 collision.gameObject.GetComponent<PlayerMovement>().hasArrow = true;
+                GameManager.Instance.UpdateArrow(true);
+            }
             else
                 collision.gameObject.GetComponent<PlayerMovement>().hasTorch = true;
 
