@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private Transform target;
     private Rigidbody2D rb;
     private bool isChasing = false; // 추적 상태
-    private Vector3 startPosition; // 매달린 위치 저장
+    public Vector3 startPosition; // 매달린 위치 저장
 
     private void Start()
     {
@@ -21,10 +21,11 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if(!isChasing)
+        FindTarget();
+        /*if(!isChasing)
         {
             FindTarget();
-        }
+        }*/
     }
 
     // 플레이어, 분신 추적
@@ -62,7 +63,9 @@ public class Enemy : MonoBehaviour
         // 플레이어, 분신, 얼음벽과 충돌 시
         if(other.CompareTag("Player") || other.CompareTag("Mimic") ||other.name.Contains("Gate"))
         {
-            Destroy(gameObject);
+            transform.position = startPosition;
+            isChasing = false;
+            gameObject.SetActive(false);
         }
 
         // 이외 충돌 시 무시
@@ -78,7 +81,9 @@ public class Enemy : MonoBehaviour
         GameObject other = collision.gameObject;
         if(other.CompareTag("Waterfall"))
         {
-            Destroy(gameObject);
+            transform.position = startPosition;
+            isChasing = false;
+            gameObject.SetActive(false);
         }
     }
 

@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<GameObject> units { get; set; } = new List<GameObject>();
     [HideInInspector] public List<List<GameObject>> obstacles { get; set; } = new List<List<GameObject>>();
     [HideInInspector] public List<List<MirrorGate>> gates { get; set; } = new List<List<MirrorGate>>();
+    [HideInInspector] public List<List<GameObject>> enemies { get; set; } = new List<List<GameObject>>();
     public List<Transform> spawnPoints = new List<Transform>();
 
 
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         // 스폰 포인트에 따라 소속된 오브젝트를 obstacles, gates 2차원 구조에 초기화
         for (int i = 0; i < spawnPoints.Count; i++)
         {
+            // 장애물
             obstacles.Add(new List<GameObject>());
 
             string obsName = $"Obstacles{i + 1}";
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
                 obstacles[i].Add(child.gameObject);
             }
 
+            // 폭포수
             gates.Add(new List<MirrorGate>());
 
             string gateName = $"Gates{i + 1}";
@@ -75,6 +78,18 @@ public class GameManager : MonoBehaviour
                 gates[i].Add(temp);
                 temp.playerPosition = GameObject.FindWithTag("Player").transform;
             }
+
+            // 적(박쥐)
+            enemies.Add(new List<GameObject>());
+
+            string enName = $"Enemy{i + 1}";
+            GameObject parentObj3 = GameObject.Find(enName);
+            Transform parent_enemies = parentObj3.transform;
+            foreach (Transform enemy in parent_enemies)
+            {
+                enemies[i].Add(enemy.gameObject);
+            }
+
         }
 
         Transform parent_soundEffect = transform.Find("SoundEffects");
@@ -142,6 +157,17 @@ public class GameManager : MonoBehaviour
                 if (gate.isSolid) gate.ChangeState(0);
                 gate.gameObject.tag = "Waterfall";
                 gate.playerPosition = GameObject.FindWithTag("Player").transform;
+            }
+        }
+
+        for(int i = checkpointIndex; i < enemies.Count; i++)
+        {
+            // 적(박쥐) 리스폰
+            foreach (GameObject obj in enemies[i])
+            {
+                Enemy enemy = obj.GetComponent<Enemy>();
+                enemy.transform.position = enemy.startPosition;
+                obj.SetActive(true);
             }
         }
 
