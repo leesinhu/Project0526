@@ -114,7 +114,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 1280
         width: 256
         height: 256
       alignment: 0
@@ -135,7 +135,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 256
-        y: 256
+        y: 1280
         width: 256
         height: 256
       alignment: 0
@@ -156,7 +156,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 256
+        y: 1280
         width: 256
         height: 256
       alignment: 0
@@ -177,7 +177,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 768
-        y: 256
+        y: 1280
         width: 256
         height: 256
       alignment: 0
@@ -197,8 +197,8 @@ TextureImporter:
       name: Player_4
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 256
+        x: 1280
+        y: 1280
         width: 256
         height: 256
       alignment: 0
@@ -218,7 +218,7 @@ TextureImporter:
       name: Player_5
       rect:
         serializedVersion: 2
-        x: 1280
+        x: 0
         y: 256
         width: 256
         height: 256
@@ -239,7 +239,7 @@ TextureImporter:
       name: Player_6
       rect:
         serializedVersion: 2
-        x: 1536
+        x: 256
         y: 256
         width: 256
         height: 256
@@ -260,7 +260,7 @@ TextureImporter:
       name: Player_7
       rect:
         serializedVersion: 2
-        x: 1792
+        x: 512
         y: 256
         width: 256
         height: 256
@@ -281,8 +281,8 @@ TextureImporter:
       name: Player_8
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 768
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -302,8 +302,8 @@ TextureImporter:
       name: Player_9
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
+        x: 1024
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -323,8 +323,8 @@ TextureImporter:
       name: Player_10
       rect:
         serializedVersion: 2
-        x: 512
-        y: 0
+        x: 1280
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -344,8 +344,8 @@ TextureImporter:
       name: Player_11
       rect:
         serializedVersion: 2
-        x: 768
-        y: 0
+        x: 1536
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -365,8 +365,8 @@ TextureImporter:
       name: Player_12
       rect:
         serializedVersion: 2
-        x: 1024
-        y: 0
+        x: 1792
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -386,7 +386,7 @@ TextureImporter:
       name: Player_13
       rect:
         serializedVersion: 2
-        x: 1280
+        x: 0
         y: 0
         width: 256
         height: 256
@@ -407,7 +407,7 @@ TextureImporter:
       name: Player_14
       rect:
         serializedVersion: 2
-        x: 1536
+        x: 256
         y: 0
         width: 256
         height: 256
@@ -428,7 +428,7 @@ TextureImporter:
       name: Player_15
       rect:
         serializedVersion: 2
-        x: 1792
+        x: 512
         y: 0
         width: 256
         height: 256
@@ -441,6 +441,111 @@ TextureImporter:
       bones: []
       spriteID: f8e831a1bd1d2854b93d2ac86f371620
       internalID: 1286359857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_16
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b6ae110ca9848849bf33be80a22d450
+      internalID: -1657712160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_17
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ed3c07989c463f4e9e4625f564b26e1
+      internalID: 1945511406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_18
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c250b5259a90a1d41901d074b764fa00
+      internalID: -448857093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_19
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02f7b2215873ecf45956ca69ce448e9e
+      internalID: -1166372984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Player_20
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3dcc00ebe98f5f943a865a9030d3234c
+      internalID: -623002051
       vertices: []
       indices: 
       edges: []
@@ -464,7 +569,12 @@ TextureImporter:
       Player_13: 2145304762
       Player_14: -294170026
       Player_15: 1286359857
+      Player_16: -1657712160
+      Player_17: 1945511406
+      Player_18: -448857093
+      Player_19: -1166372984
       Player_2: 1078986780
+      Player_20: -623002051
       Player_3: 2035442770
       Player_4: -309010550
       Player_5: 1298597902
