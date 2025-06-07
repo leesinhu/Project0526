@@ -89,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
         // 화살 발사
         if (hasArrow && Input.GetKeyDown(KeyCode.A))
         {
+            anim.SetTrigger("IsThrow");
             Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, 0.3f, 0f);
             var arrowInstance = Instantiate(Arrow, spawnPos, Quaternion.identity);
             arrowInstance.GetComponent<Arrow>().SetArrow(!spriteRenderer.flipX);
@@ -116,12 +117,12 @@ public class PlayerMovement : MonoBehaviour
         {
             if(spriteRenderer.flipX == false) //Right
             {
-                obj_arrow.transform.localPosition = new Vector2(0.35f, 0.2f);
+                obj_arrow.transform.localPosition = new Vector2(0.35f, 0.1f);
                 obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 45f);
             }
             else
             {
-                obj_arrow.transform.localPosition = new Vector2(-0.35f, 0.2f);
+                obj_arrow.transform.localPosition = new Vector2(-0.35f, 0.1f);
                 obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 135f);
             }
         }
