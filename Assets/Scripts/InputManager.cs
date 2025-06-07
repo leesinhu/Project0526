@@ -30,7 +30,20 @@ public class InputManager : MonoBehaviour
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (horizontal == -1)
+        if(Input.GetKey(KeyCode.LeftArrow))
+        {
+            OnInput?.Invoke(this, new InputEventArgs(InputType.MoveLeft));
+        }
+        else if(Input.GetKey(KeyCode.RightArrow))
+        {
+            OnInput?.Invoke(this, new InputEventArgs(InputType.MoveRight));
+        }
+        else
+        {
+            OnInput?.Invoke(this, new InputEventArgs(InputType.MoveStop));
+        }
+
+        /*if (horizontal == -1)
         {
             OnInput?.Invoke(this, new InputEventArgs(InputType.MoveLeft));
         }
@@ -42,7 +55,7 @@ public class InputManager : MonoBehaviour
         {
             OnInput?.Invoke(this, new InputEventArgs(InputType.MoveStop));
         }
-
+*/
         if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
         {
             OnInput?.Invoke(this, new InputEventArgs(InputType.Jump));

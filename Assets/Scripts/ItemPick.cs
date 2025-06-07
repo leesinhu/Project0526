@@ -6,23 +6,23 @@ public class ItemPick : MonoBehaviour
 {
     public bool isArrow;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Mimic")
         {
             if (isArrow)
             {
-                try
+                /*try
                 {
                     if (collision.gameObject.tag == "Player")
                         GameObject.FindGameObjectWithTag("Mimic").GetComponent<PlayerMovement>().hasArrow = true;
                     else
                         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().hasArrow = true;
                 }
-                catch { }
+                catch { }*/
 
-                collision.gameObject.GetComponent<PlayerMovement>().hasArrow = true;
-                GameManager.Instance.UpdateArrow(true);
+                collision.gameObject.GetComponent<PlayerMovement>().PickArrow(true);
+                //GameManager.Instance.UpdateArrow(true);
             }
             Destroy(gameObject);
         }

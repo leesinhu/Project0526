@@ -22,8 +22,8 @@ public class PlayerMovement : MonoBehaviour
 
     //아이템
     public bool hasArrow = false;
-    public bool hasTorch = false;
     [SerializeField] private GameObject Arrow;
+    GameObject obj_arrow;
 
     public InputManager inputManager { get; set; }
     public float movement { get; set; }
@@ -38,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         groundCheck = transform.GetChild(0);
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        obj_arrow = transform.GetChild(1).gameObject;
     }
     void Start()
     {
@@ -84,13 +85,14 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
 
+
         // 화살 발사
-        if (hasArrow && Input.GetKeyDown(KeyCode.LeftControl))
+        if (hasArrow && Input.GetKeyDown(KeyCode.A))
         {
             Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, 0.3f, 0f);
             var arrowInstance = Instantiate(Arrow, spawnPos, Quaternion.identity);
             arrowInstance.GetComponent<Arrow>().SetArrow(!spriteRenderer.flipX);
-            hasArrow = false;
+            PickArrow(false);
             GameManager.Instance.UpdateArrow(false);
         }
     }
@@ -109,6 +111,20 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = movement < 0; // 왼쪽으로 이동 시 flipX = true
         }
         //
+
+        if(hasArrow)
+        {
+            if(spriteRenderer.flipX == false) //Right
+            {
+                obj_arrow.transform.localPosition = new Vector2(0.35f, 0.2f);
+                obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 45f);
+            }
+            else
+            {
+                obj_arrow.transform.localPosition = new Vector2(-0.35f, 0.2f);
+                obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 135f);
+            }
+        }
 
         if (jumpFlag && isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
         {
@@ -139,6 +155,20 @@ public class PlayerMovement : MonoBehaviour
                     rb.velocity = new Vector3(newX, rb.velocity.y, 0f);
                 }
             }
+        }
+    }
+
+    public void PickArrow(bool b)
+    {
+        if(b)
+        {
+            hasArrow = true;
+            obj_arrow.SetActive(true);
+        }
+        else
+        {
+            hasArrow = false;
+            obj_arrow.SetActive(false);
         }
     }
 
@@ -227,7 +257,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Waterfall")
         {
-            collision.gameObject.tag = "Untagged";
+            collision.gameObject.tag = "IceWall";
             rb.gravityScale = 1;
         }
 

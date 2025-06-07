@@ -24,9 +24,9 @@ public class MirrorGate : MonoBehaviour
 
     private float distance;
 
-    [SerializeField] Sprite solidSprite;  //????? ???? ?????????
-    Animator anim;                        // Animator
-    Sprite _defaultSprite;                // ?????��? ?????????
+    [SerializeField] Sprite solidSprite;
+    Animator anim;                      
+    Sprite _defaultSprite;
     private void Awake()
     {
         collider = GetComponent<BoxCollider2D>();
@@ -104,8 +104,7 @@ public class MirrorGate : MonoBehaviour
             Vector3 mimicPos = new Vector3(transform.position.x - offset_x, other.transform.position.y, 0);
             PlayerMovement _mimic = Instantiate(mimic, mimicPos, Quaternion.identity).GetComponent<PlayerMovement>();
             _mimic.isReverse = !unit.isReverse;
-            _mimic.hasArrow = unit.hasArrow;
-            _mimic.hasTorch = unit.hasTorch;
+            _mimic.PickArrow(unit.hasArrow);
 
             audio_ice.Play();
 

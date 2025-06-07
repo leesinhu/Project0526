@@ -8,6 +8,7 @@ TagManager:
   - Item
   - Waterfall
   - Enemy
+  - IceWall
   layers:
   - Default
   - TransparentFX
