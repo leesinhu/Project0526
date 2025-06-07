@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour
         GameObject other = collision.gameObject;
 
         // 플레이어, 분신, 얼음벽과 충돌 시
-        if(other.CompareTag("Player") || other.CompareTag("Mimic") ||other.name.Contains("Gate"))
+        if(other.CompareTag("Player") || other.CompareTag("Mimic") || other.name.Contains("Gate"))
         {
             transform.position = startPosition;
             isChasing = false;
@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour
     {
         //폭포수와 접촉 시
         GameObject other = collision.gameObject;
-        if(other.CompareTag("Waterfall"))
+        if(other.CompareTag("Waterfall") || other.CompareTag("Item" ))
         {
             transform.position = startPosition;
             isChasing = false;

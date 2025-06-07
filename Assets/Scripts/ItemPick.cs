@@ -24,7 +24,7 @@ public class ItemPick : MonoBehaviour
                 collision.gameObject.GetComponent<PlayerMovement>().PickArrow(true);
                 //GameManager.Instance.UpdateArrow(true);
             }
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

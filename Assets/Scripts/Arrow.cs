@@ -50,7 +50,7 @@ public class Arrow : MonoBehaviour
             Destroy(gameObject);
         }
         else if(collision.gameObject.tag == "Waterfall" || collision.gameObject.tag == "IceWall"
-            || collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            || collision.gameObject.layer == LayerMask.NameToLayer("Ground") || collision.gameObject.CompareTag("Enemy"))
         {
             Destroy(gameObject);
         }

@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<List<GameObject>> obstacles { get; set; } = new List<List<GameObject>>();
     [HideInInspector] public List<List<MirrorGate>> gates { get; set; } = new List<List<MirrorGate>>();
     [HideInInspector] public List<List<GameObject>> enemies { get; set; } = new List<List<GameObject>>();
+    [HideInInspector] public List<List<GameObject>> items { get; set; } = new List<List<GameObject>>();
     public List<Transform> spawnPoints = new List<Transform>();
 
 
@@ -90,6 +91,16 @@ public class GameManager : MonoBehaviour
                 enemies[i].Add(enemy.gameObject);
             }
 
+            // 아이템(화살)
+            items.Add(new List<GameObject>());
+
+            string itemName = $"Item{i + 1}";
+            GameObject parentObj4 = GameObject.Find(itemName);
+            Transform parent_items = parentObj4.transform;
+            foreach(Transform item in parent_items)
+            {
+                items[i].Add(item.gameObject);
+            }
         }
 
         Transform parent_soundEffect = transform.Find("SoundEffects");
@@ -168,6 +179,15 @@ public class GameManager : MonoBehaviour
                 Enemy enemy = obj.GetComponent<Enemy>();
                 enemy.transform.position = enemy.startPosition;
                 obj.SetActive(true);
+            }
+        }
+
+        for(int i = checkpointIndex; i < items.Count; i++)
+        {
+            // 아이템(화살) 리스폰
+            foreach(GameObject obj in items[i])
+            {
+                if(!obj.activeSelf) obj.SetActive(true);
             }
         }
 
