@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +23,7 @@ public class GameManager : MonoBehaviour
     public bool wallLimit { get; set; } = false;
 
     // Canvas
-    [SerializeField] private GameObject arrowIcon;
+    [SerializeField] GameObject signUI;
 
     //List
     [HideInInspector] public List<GameObject> units { get; set; } = new List<GameObject>();
@@ -97,7 +99,7 @@ public class GameManager : MonoBehaviour
             string itemName = $"Item{i + 1}";
             GameObject parentObj4 = GameObject.Find(itemName);
             Transform parent_items = parentObj4.transform;
-            foreach(Transform item in parent_items)
+            foreach (Transform item in parent_items)
             {
                 items[i].Add(item.gameObject);
             }
@@ -108,8 +110,6 @@ public class GameManager : MonoBehaviour
         {
             soundEffects.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
         }
-
-        UpdateArrow(false);
     }
 
     private void Update()
@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        for(int i = checkpointIndex; i < enemies.Count; i++)
+        for (int i = checkpointIndex; i < enemies.Count; i++)
         {
             // 적(박쥐) 리스폰
             foreach (GameObject obj in enemies[i])
@@ -182,12 +182,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        for(int i = checkpointIndex; i < items.Count; i++)
+        for (int i = checkpointIndex; i < items.Count; i++)
         {
             // 아이템(화살) 리스폰
-            foreach(GameObject obj in items[i])
+            foreach (GameObject obj in items[i])
             {
-                if(!obj.activeSelf) obj.SetActive(true);
+                if (!obj.activeSelf) obj.SetActive(true);
             }
         }
 
@@ -216,8 +216,23 @@ public class GameManager : MonoBehaviour
         audioSource.PlayOneShot(audioSource.clip);
     }
 
-    public void UpdateArrow(bool hasArrow)
+    public void ShowSignUI(string ment, Transform tr_sign, bool isActive)
     {
-        arrowIcon.SetActive(hasArrow);
+        if (!isActive)
+        {
+            signUI.SetActive(isActive);
+            return;
+        }
+        signUI.GetComponent<RectTransform>().position = Camera.main.WorldToScreenPoint(tr_sign.position);
+        signUI.SetActive(isActive);
+        signUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ment;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(signUI.GetComponent<RectTransform>());
     }
+
+    public void UpdateSignUI(Transform tr_sign)
+    {
+        signUI.GetComponent<RectTransform>().position = Camera.main.WorldToScreenPoint(tr_sign.position);
+    }
+
+
 }

@@ -15,12 +15,12 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb { get; set; }
     public bool isGrounded { get; set; }
 
-    [SerializeField] float coyoteTimeDuration = 0.15f;  // ÄÚ¿äÅ× Å¸ÀÓ Áö¼Ó½Ã°£
-    [SerializeField] float jumpBufferDuration = 0.15f;  // Á¡ÇÁ¹öÆÛ Áö¼Ó½Ã°£
+    [SerializeField] float coyoteTimeDuration = 0.15f;  // ï¿½Ú¿ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
+    [SerializeField] float jumpBufferDuration = 0.15f;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
     float coyoteTimeCounter = 0f;
     float jumpBufferCounter = 0f;
 
-    //¾ÆÀÌÅÛ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public bool hasArrow = false;
     [SerializeField] private GameObject Arrow;
     GameObject obj_arrow;
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         GameManager.Instance.units.Add(this.gameObject);
 
         canMove = true;
-        if(this.CompareTag("Mimic"))   // ÇöÀç ¿ÀºêÁ§Æ®°¡ playerÀÎÁö mimicÀÎÁö ±¸ºÐ
+        if(this.CompareTag("Mimic"))   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ playerï¿½ï¿½ï¿½ï¿½ mimicï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             isMimic = true;
         }
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     {
         this.moveSpeed = GameManager.Instance.moveSpeed;
         this.jumpForce = GameManager.Instance.jumpForce;
-        /*       // Á¡ÇÁ ÀÔ·Â
+        /*       // ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
                if (jumpFlag && isGrounded)
                {
                    jumpBufferCounter = jumpBufferDuration;
@@ -74,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
 
                if (isGrounded)
                {
-                   coyoteTimeCounter = coyoteTimeDuration; // ÂøÁö ½Ã ÄÚ¿äÅ× Å¸ÀÓ ÃÊ±âÈ­
+                   coyoteTimeCounter = coyoteTimeDuration; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú¿ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½Ê±ï¿½È­
                }
                else
                {
-                   coyoteTimeCounter -= Time.deltaTime;  // °øÁß¿¡ ÀÖÀ¸¸é Ä«¿îÅÍ °¨¼Ò
+                   coyoteTimeCounter -= Time.deltaTime;  // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                }*/
         if (GameManager.Instance.screenLimit)
         {
@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        // È­»ì ¹ß»ç
+        // È­ï¿½ï¿½ ï¿½ß»ï¿½
         if (hasArrow && Input.GetKeyDown(KeyCode.A))
         {
             anim.SetTrigger("IsThrow");
@@ -94,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
             var arrowInstance = Instantiate(Arrow, spawnPos, Quaternion.identity);
             arrowInstance.GetComponent<Arrow>().SetArrow(!spriteRenderer.flipX);
             PickArrow(false);
-            GameManager.Instance.UpdateArrow(false);
         }
     }
 
@@ -102,14 +101,14 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //
-        //Ãß°¡
-        //¾Ö´Ï¸ÞÀÌ¼Ç ÀÛ¿ë 
+        //ï¿½ß°ï¿½
+        //ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½Û¿ï¿½ 
         bool isWalking = movement != 0 && isGrounded;
         anim.SetBool("IsWalk", isWalking);
-        //ÀÌµ¿¹æÇâÀ¸·Î ½ºÇÁ¶óÀÌÆ® È¸Àü
+        //ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È¸ï¿½ï¿½
         if (movement != 0)
         {
-            spriteRenderer.flipX = movement < 0; // ¿ÞÂÊÀ¸·Î ÀÌµ¿ ½Ã flipX = true
+            spriteRenderer.flipX = movement < 0; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ flipX = true
         }
         //
 
@@ -135,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        // ÁÂ¿ì ÀÌµ¿
+        // ï¿½Â¿ï¿½ ï¿½Ìµï¿½
         if(canMove)
         { 
             if (isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
@@ -248,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.tag == "Waterfall")
             rb.gravityScale = 10;
 
-        //¼¼ÀÌºê Æ÷ÀÎÆ® µµ´Þ ½Ã °»½Å
+        //ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (collision.CompareTag("Respawn"))
         {
             GameManager.Instance.lastSpawnPoint = collision.gameObject.transform;
@@ -262,8 +261,8 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 1;
         }
 
-        // º®¿¡¼­ ¶³¾îÁø °æ¿ì Á¦ÇÑ ÇØÁ¦
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player°¡ wall¿¡ Á¢ÃËÁßÀÎ °æ¿ì
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // playerï¿½ï¿½ wallï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
             if (mimic != null)
@@ -275,7 +274,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimicÀÌ wall¿¡ Á¢ÃËÁßÀÎ °æ¿ì
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimicï¿½ï¿½ wallï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
@@ -291,7 +290,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Àû °³Ã¼¿Í Á¢ÃË ½Ã »ç¸Á
+        // ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
         GameObject other = collision.gameObject;
         if(other.CompareTag("Enemy"))
         {
@@ -303,12 +302,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isMimic)
         {
-            //ÀüÃ¼(player + ¸ðµç mimic)
+            //ï¿½ï¿½Ã¼(player + ï¿½ï¿½ï¿½ mimic)
             GameManager.Instance.DestroyObj();
         }
         else
         {
-            //ÇØ´ç mimic¸¸
+            //ï¿½Ø´ï¿½ mimicï¿½ï¿½
             GameManager.Instance.DestroyObj(this.gameObject);
         }
     }
@@ -323,8 +322,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        // ÇÃ·¹ÀÌ¾î/ºÐ½ÅÀÌ º®¿¡ ¸·Èù °æ¿ì ºÐ½Å/ÇÃ·¹ÀÌ¾îÀÇ ¿òÁ÷ÀÓ Á¦ÇÑ
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player°¡ wall¿¡ Á¢ÃËÁßÀÎ °æ¿ì
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½/ï¿½Ð½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½/ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // playerï¿½ï¿½ wallï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
             if (mimic != null && this.canMove)
@@ -337,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimicÀÌ wall¿¡ Á¢ÃËÁßÀÎ °æ¿ì
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimicï¿½ï¿½ wallï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
