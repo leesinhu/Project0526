@@ -117,13 +117,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if(spriteRenderer.flipX == false) //Right
             {
-                obj_arrow.transform.localPosition = new Vector2(0.35f, 0.1f);
-                obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 45f);
+                obj_arrow.transform.localPosition = new Vector2(0.25f, 0.15f);
+                obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 60f);
             }
             else
             {
-                obj_arrow.transform.localPosition = new Vector2(-0.35f, 0.1f);
-                obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 135f);
+                obj_arrow.transform.localPosition = new Vector2(-0.25f, 0.15f);
+                obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 120f);
             }
         }
 
