@@ -127,7 +127,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        // �¿� �̵�
         if(canMove)
         { 
             if (isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
@@ -307,6 +306,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDestroy()
     {
+        if(this.gameObject.tag == "Mimic")
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                var playerMovement = player.GetComponent<PlayerMovement>();
+                playerMovement.canMove = true;
+            }
+        }
+
         if (inputManager != null)
         {
             inputManager.OnInput -= HandleInput;
@@ -315,8 +324,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        // �÷��̾�/�н��� ���� ���� ��� �н�/�÷��̾��� ������ ����
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player�� wall�� �������� ���
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && !isMimic) // player
         {
             GameObject mimic = GameObject.FindGameObjectWithTag("Mimic");
             if (mimic != null && this.canMove)
@@ -329,7 +337,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimic�� wall�� �������� ���
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isMimic) // mimic
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
@@ -341,6 +349,8 @@ public class PlayerMovement : MonoBehaviour
                     playerMovement.canMove = false;
                 }
             }
+
+
         }
     }
 }
