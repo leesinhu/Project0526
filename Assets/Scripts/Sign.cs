@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Sign : MonoBehaviour
 {
+    [TextArea(3, 10)]
     [SerializeField] private string sign_ment = "null";
     [SerializeField] private Transform uiPosition;
 
