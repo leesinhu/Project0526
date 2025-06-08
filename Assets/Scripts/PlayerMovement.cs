@@ -74,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
 
                if (isGrounded)
                {
-                   coyoteTimeCounter = coyoteTimeDuration; // ���� �� �ڿ��� Ÿ�� �ʱ�ȭ
+                   coyoteTimeCounter = coyoteTimeDuration; 
                }
                else
                {
-                   coyoteTimeCounter -= Time.deltaTime;  // ���߿� ������ ī���� ����
+                   coyoteTimeCounter -= Time.deltaTime; 
                }*/
         if (GameManager.Instance.screenLimit)
         {
@@ -86,7 +86,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        // ȭ�� �߻�
         if (hasArrow && Input.GetKeyDown(KeyCode.A))
         {
             anim.SetTrigger("IsThrow");
@@ -99,18 +98,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        //
-        //�߰�
-        //�ִϸ��̼� �ۿ� 
         bool isWalking = movement != 0 && isGrounded;
         anim.SetBool("IsWalk", isWalking);
-        //�̵��������� ��������Ʈ ȸ��
         if (movement != 0)
         {
-            spriteRenderer.flipX = movement < 0; // �������� �̵� �� flipX = true
+            spriteRenderer.flipX = movement < 0; //
         }
-        //
 
         if(hasArrow)
         {

@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
                 temp.playerPosition = GameObject.FindWithTag("Player").transform;
             }
 
-            // 적(박쥐)
+            /*// 적(박쥐)
             enemies.Add(new List<GameObject>());
 
             string enName = $"Enemy{i + 1}";
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
             foreach (Transform item in parent_items)
             {
                 items[i].Add(item.gameObject);
-            }
+            }*/
         }
 
         Transform parent_soundEffect = transform.Find("SoundEffects");

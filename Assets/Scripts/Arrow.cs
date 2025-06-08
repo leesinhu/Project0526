@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    public float speed = 13f;
+    public float speed = 8f;
     private Vector3 moveDirection;
 
     private Rigidbody2D rb;
 
     private Vector3 startPosition;
-    public float maxDistance = 20f;
+    public float maxDistance = 25f;
 
     public void SetArrow(bool is_right)
     {

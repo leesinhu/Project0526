@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
+        //float horizontal = Input.GetAxisRaw("Horizontal");
 
         if(Input.GetKey(KeyCode.LeftArrow))
         {
