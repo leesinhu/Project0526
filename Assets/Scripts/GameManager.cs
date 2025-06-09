@@ -54,6 +54,16 @@ public class GameManager : MonoBehaviour
 
         Physics2D.gravity = gravityScale;
 
+        
+
+        Transform parent_soundEffect = transform.Find("SoundEffects");
+        foreach (Transform child in parent_soundEffect)
+        {
+            soundEffects.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
+        }
+    }
+    private void Start()
+    {
         // 스폰 포인트에 따라 소속된 오브젝트를 obstacles, gates 2차원 구조에 초기화
         for (int i = 0; i < spawnPoints.Count; i++)
         {
@@ -82,7 +92,7 @@ public class GameManager : MonoBehaviour
                 temp.playerPosition = GameObject.FindWithTag("Player").transform;
             }
 
-            /*// 적(박쥐)
+            //몬스터
             enemies.Add(new List<GameObject>());
 
             string enName = $"Enemy{i + 1}";
@@ -93,6 +103,7 @@ public class GameManager : MonoBehaviour
                 enemies[i].Add(enemy.gameObject);
             }
 
+
             // 아이템(화살)
             items.Add(new List<GameObject>());
 
@@ -102,16 +113,9 @@ public class GameManager : MonoBehaviour
             foreach (Transform item in parent_items)
             {
                 items[i].Add(item.gameObject);
-            }*/
-        }
-
-        Transform parent_soundEffect = transform.Find("SoundEffects");
-        foreach (Transform child in parent_soundEffect)
-        {
-            soundEffects.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
+            }
         }
     }
-
     private void Update()
     {
         Physics2D.gravity = gravityScale;
@@ -165,6 +169,7 @@ public class GameManager : MonoBehaviour
             // 폭포수 리스폰
             foreach (MirrorGate gate in gates[i])
             {
+                if (gate.gameObject.activeSelf == false) gate.gameObject.SetActive(true);
                 if (gate.isSolid) gate.ChangeState(0);
                 gate.gameObject.tag = "Waterfall";
                 gate.playerPosition = GameObject.FindWithTag("Player").transform;
@@ -177,8 +182,9 @@ public class GameManager : MonoBehaviour
             foreach (GameObject obj in enemies[i])
             {
                 Enemy enemy = obj.GetComponent<Enemy>();
-                enemy.transform.position = enemy.startPosition;
-                obj.SetActive(true);
+                //enemy.transform.position = enemy.startPosition;
+                if (!enemy.gameObject.activeSelf) enemy.gameObject.SetActive(true);
+                enemy.ResetEnemy();
             }
         }
 
@@ -193,7 +199,6 @@ public class GameManager : MonoBehaviour
 
         screenLimit = false;
         wallLimit = false;
-
     }
 
     // 디버깅용 개발자 리스폰

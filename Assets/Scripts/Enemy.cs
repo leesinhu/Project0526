@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float detectionRange = 5f;
+    public Vector2 detectionOffset = Vector2.zero;
+    public float detectionRadiusX = 3f; // ê°€ë¡œ ë°˜ì§€ë¦„
+    public float detectionRadiusY = 5f; // ì„¸ë¡œ ë°˜ì§€ë¦„
+
+    //public float detectionRange = 5f;
     public float moveSpeed = 2f;
     public string[] targetTags = { "Player", "Mimic" };
 
     private Transform target;
     private Rigidbody2D rb;
-    private bool isChasing = false; // ÃßÀû »óÅÂ
-    public Vector3 startPosition; // ¸Å´Ş¸° À§Ä¡ ÀúÀå
+    private bool isChasing = false; // ì¶”ì  ìƒíƒœ
+    public Vector3 startPosition; // ë§¤ë‹¬ë¦° ìœ„ì¹˜ ì €ì¥
+    private Vector3 targetLastPosition;
+
+    Animator anim;
 
     private void Start()
     {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         startPosition = transform.position;
     }
@@ -28,69 +36,102 @@ public class Enemy : MonoBehaviour
         }*/
     }
 
-    // ÇÃ·¹ÀÌ¾î, ºĞ½Å ÃßÀû
+    // í”Œë ˆì´ì–´, ë¶„ì‹  ì¶”ì 
     private void FixedUpdate()
     {
         if(isChasing && target != null)
         {
-            Vector2 direction = (target.position - transform.position).normalized;
+            Vector3 chasePosition = target != null ? target.position : targetLastPosition;
+            Vector2 direction = ((Vector2)chasePosition - rb.position).normalized;
             rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
         }
     }
 
-    // ¹üÀ§ ¾È¿¡¼­ ÇÃ·¹ÀÌ¾î, ºĞ½Å Å½Áö
+    // ë²”ìœ„ ì•ˆì—ì„œ í”Œë ˆì´ì–´, ë¶„ì‹  íƒì§€
     void FindTarget()
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, detectionRange);
-        foreach(Collider2D hit in hits)
+        if (isChasing && target != null)
+            return;
+
+        Vector2 detectionCenter = (Vector2)transform.position + detectionOffset;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(detectionCenter, Mathf.Max(detectionRadiusX, detectionRadiusY));
+        foreach (Collider2D hit in hits)
         {
-            foreach(string tag in targetTags)
+            Vector2 diff = (Vector2)hit.transform.position - detectionCenter;
+            float dx = diff.x / detectionRadiusX;
+            float dy = diff.y / detectionRadiusY;
+
+            if (dx * dx + dy * dy <= 1f)
             {
-                if(hit.CompareTag(tag))
+                foreach (string tag in targetTags)
                 {
-                    target = hit.transform;
-                    isChasing = true;
-                    return;
+                    if (hit.CompareTag(tag))
+                    {
+                        target = hit.transform;
+                        targetLastPosition = target.position;
+                        isChasing = true;
+                        anim.SetBool("isChasing", true);
+                        return;
+                    }
                 }
             }
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        GameObject other = collision.gameObject;
-
-        // ÇÃ·¹ÀÌ¾î, ºĞ½Å, ¾óÀ½º®°ú Ãæµ¹ ½Ã
-        if(other.CompareTag("Player") || other.CompareTag("Mimic") || other.name.Contains("Gate"))
-        {
-            transform.position = startPosition;
-            isChasing = false;
-            gameObject.SetActive(false);
-        }
-
-        // ÀÌ¿Ü Ãæµ¹ ½Ã ¹«½Ã
-        if (other.CompareTag("Untagged"))
-        {
-            Physics2D.IgnoreCollision(collision.collider, GetComponent<Collider2D>());
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //ÆøÆ÷¼ö¿Í Á¢ÃË ½Ã
         GameObject other = collision.gameObject;
-        if(other.CompareTag("Waterfall") || other.CompareTag("Item" ))
+
+        // ì¶©ëŒ í›„ ë¦¬ì…‹ ë° ë¹„í™œì„±í™” ëŒ€ìƒ íƒœê·¸/ì´ë¦„
+        bool shouldReset =
+            other.CompareTag("Player") ||
+            other.CompareTag("Mimic") ||
+            other.name.Contains("Gate") ||
+            other.CompareTag("Waterfall") ||
+            other.CompareTag("Item");
+
+        if (shouldReset)
         {
-            transform.position = startPosition;
+
+            anim.SetBool("isChasing", false);
             isChasing = false;
+            target = null; // íƒ€ê²Ÿë„ í•´ì œ
+            transform.position = startPosition;
             gameObject.SetActive(false);
         }
+
+        // ê·¸ ì™¸ "Untagged" ì¶©ëŒ ë¬´ì‹œ
+        /*if (other.CompareTag("Untagged"))
+        {
+            Physics2D.IgnoreCollision(collision, GetComponent<Collider2D>());
+        }*/
     }
 
-    // ¾À ºä¿¡¼­ °¨Áö ¹üÀ§¸¦ °¡½ÃÀûÀ¸·Î Ç¥Çö
+
+    // ì”¬ ë·°ì—ì„œ ê°ì§€ ë²”ìœ„ë¥¼ ê°€ì‹œì ìœ¼ë¡œ í‘œí˜„
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.matrix = transform.localToWorldMatrix;
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(detectionRadiusX * 2, detectionRadiusY * 2, 0));
+        Gizmos.DrawWireSphere(Vector3.zero, 1f); // íƒ€ì› ëŒ€ì²´ ì‹œê°ì  ì°¸ì¡° (ì›)
     }
+
+    public void ResetEnemy()
+    {
+        anim.SetBool("isChasing", false);
+        isChasing = false;
+        target = null; // íƒ€ê²Ÿë„ í•´ì œ
+        transform.position = startPosition;
+    }
+
+    /*private void OnEnable()
+    {
+        if (anim == null)
+            anim = GetComponent<Animator>();
+
+        anim.SetBool("isChasing", false);
+    }*/
 }

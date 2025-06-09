@@ -237,7 +237,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Waterfall")
+        {
             rb.gravityScale = 10;
+        }
+
+        if (collision.CompareTag("Enemy"))
+        {
+            Die();
+        }
 
         //���̺� ����Ʈ ���� �� ����
         if (collision.CompareTag("Respawn"))
@@ -277,16 +284,6 @@ public class PlayerMovement : MonoBehaviour
                     playerMovement.canMove = true;
                 }
             }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // �� ��ü�� ���� �� ���
-        GameObject other = collision.gameObject;
-        if(other.CompareTag("Enemy"))
-        {
-            Die();
         }
     }
 
