@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject Arrow;
     GameObject obj_arrow;
 
+    [SerializeField] private ParticleSystem effect;
+
     public InputManager inputManager { get; set; }
     public float movement { get; set; }
     public bool jumpFlag { get; set; }
@@ -52,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         GameManager.Instance.units.Add(this.gameObject);
 
         canMove = true;
-        if(this.CompareTag("Mimic"))   // ���� ������Ʈ�� player���� mimic���� ����
+        if (this.CompareTag("Mimic"))   // ���� ������Ʈ�� player���� mimic���� ����
         {
             isMimic = true;
         }
@@ -105,9 +107,9 @@ public class PlayerMovement : MonoBehaviour
             spriteRenderer.flipX = movement < 0; //
         }
 
-        if(hasArrow)
+        if (hasArrow)
         {
-            if(spriteRenderer.flipX == false) //Right
+            if (spriteRenderer.flipX == false) //Right
             {
                 obj_arrow.transform.localPosition = new Vector2(0.25f, 0.15f);
                 obj_arrow.transform.rotation = Quaternion.Euler(0, 0, 60f);
@@ -127,15 +129,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        if(canMove)
-        { 
+        if (canMove)
+        {
             if (isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
             {
-                if(!GameManager.Instance.screenLimit)
+                if (!GameManager.Instance.screenLimit)
                 {
                     rb.velocity = new Vector3(movement * moveSpeed, rb.velocity.y, 0f);
                 }
-             
+
             }
             else
             {
@@ -152,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void PickArrow(bool b)
     {
-        if(b)
+        if (b)
         {
             hasArrow = true;
             obj_arrow.SetActive(true);
@@ -289,21 +291,32 @@ public class PlayerMovement : MonoBehaviour
 
     public void Die()
     {
+        rb.velocity = Vector2.zero;
+        StartCoroutine(DieDelay());
+    }
+
+    private IEnumerator DieDelay()
+    {
         if (!isMimic)
         {
             //��ü(player + ��� mimic)
+            effect.Play();
+            yield return new WaitForSeconds(0.5f);
             GameManager.Instance.DestroyObj();
         }
         else
         {
             //�ش� mimic��
+                        effect.Play();
+
+            yield return new WaitForSeconds(0.5f);
             GameManager.Instance.DestroyObj(this.gameObject);
         }
     }
 
     private void OnDestroy()
     {
-        if(this.gameObject.tag == "Mimic")
+        if (this.gameObject.tag == "Mimic")
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
