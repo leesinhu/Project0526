@@ -5,7 +5,7 @@ using UnityEngine;
 public class MirrorGate : MonoBehaviour
 {
     [SerializeField] GameObject mimic;
-    [HideInInspector] public Transform playerPosition;
+    [HideInInspector] public Transform playerPosition { get; set; }
     Vector3 enterPosition;
     BoxCollider2D collider;
     SpriteRenderer spRend;
@@ -13,7 +13,7 @@ public class MirrorGate : MonoBehaviour
     //Sound
     [SerializeField] AudioSource audio_waterfall;
     [SerializeField] AudioSource audio_ice;
-    [SerializeField] [Range(0f, 1f)] float maxVolume = 1f;
+    [SerializeField] [Range(0f, 0.75f)] float maxVolume = 0.75f;
 
     //ī�޶� �̵� ����
     [SerializeField] bool cameraChange;
@@ -37,14 +37,10 @@ public class MirrorGate : MonoBehaviour
         audio_waterfall.volume = 0;
     }
 
-    ///
-    /// ???? ????? ???? ??? 
-    ///
     private void Update()
     {
         if (isSolid)
         {
-            // solid ?????? ??: ??????? ???? ????????? ???
             if (anim != null && anim.enabled)
                 anim.enabled = false;
 
@@ -53,7 +49,6 @@ public class MirrorGate : MonoBehaviour
         }
         else
         {
-            // non-solid ?????? ??: ??????? ??? ???????
             if (anim != null && !anim.enabled)
                 anim.enabled = true;
 
@@ -61,7 +56,25 @@ public class MirrorGate : MonoBehaviour
                 spRend.sprite = _defaultSprite;
         }
 
-        // ?????? ????? ????
+        if (playerPosition != null)
+        {
+            distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
+
+            if (isSolid || distance > soundThreshold)
+            {
+                audio_waterfall.volume = 0;
+            }
+            else
+            {
+                float t = Mathf.Clamp01(1f - (distance / soundThreshold));
+                audio_waterfall.volume = Mathf.Pow(t, 2) * maxVolume;
+            }
+        }
+        else
+        {
+            audio_waterfall.volume = 0;
+        }
+/*
         if (playerPosition != null)
         {
             distance = Vector2.Distance(playerPosition.position, transform.position) - 4;
@@ -73,7 +86,7 @@ public class MirrorGate : MonoBehaviour
             float t = Mathf.Clamp01(1f - (distance / soundThreshold));
             audio_waterfall.volume = Mathf.Pow(t, 2) * maxVolume;
             //audio_waterfall.volume = Mathf.Lerp(0, 1, Mathf.Clamp01(1f - (distance / soundThreshold)));
-        }
+        }*/
             
     }
 
@@ -87,6 +100,7 @@ public class MirrorGate : MonoBehaviour
         // 얼음벽이 적과 닿으면 파괴됨
         if (other.gameObject.CompareTag("Enemy") && isSolid)
         {
+            SoundManager.Instance.PrintSoundEffect("icebreak");
             this.gameObject.SetActive(false);
         }
     }

@@ -21,6 +21,7 @@ public class ItemPick : MonoBehaviour
                 }
                 catch { }*/
 
+                SoundManager.Instance.PrintSoundEffect("ready");
                 collision.gameObject.GetComponent<PlayerMovement>().PickArrow(true);
                 //GameManager.Instance.UpdateArrow(true);
             }

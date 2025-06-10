@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,34 +34,22 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<List<GameObject>> items { get; set; } = new List<List<GameObject>>();
     public List<Transform> spawnPoints = new List<Transform>();
 
-
-    //Dictionary
-    Dictionary<string, AudioSource> soundEffects = new Dictionary<string, AudioSource>();
-
     void Awake()
     {
-        if (Instance != null && Instance != this)
+        /*if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
-        }
+        }*/
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         lastSpawnPoint = spawnPoints[0];
 
         player = Resources.Load<GameObject>("Prefab/Player_Penguin");
 
         Physics2D.gravity = gravityScale;
-
-        
-
-        Transform parent_soundEffect = transform.Find("SoundEffects");
-        foreach (Transform child in parent_soundEffect)
-        {
-            soundEffects.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
-        }
     }
     private void Start()
     {
@@ -115,6 +104,8 @@ public class GameManager : MonoBehaviour
                 items[i].Add(item.gameObject);
             }
         }
+
+        SoundManager.Instance.PlaySoundTrack("main");
     }
     private void Update()
     {
@@ -215,11 +206,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Respawn());
     }
 
-    public void PrintSoundEffect(string audioName)
-    {
-        AudioSource audioSource = soundEffects[audioName];
-        audioSource.PlayOneShot(audioSource.clip);
-    }
 
     public void ShowSignUI(string ment, Transform tr_sign, bool isActive)
     {
@@ -239,5 +225,44 @@ public class GameManager : MonoBehaviour
         signUI.GetComponent<RectTransform>().position = Camera.main.WorldToScreenPoint(tr_sign.position);
     }
 
+    public void BackToMain()
+    {
+        SceneManager.LoadScene("Title");
+    }
 
+    public void SetNewSavePoint(GameObject savePointObj)
+    {
+        GameManager.Instance.lastSpawnPoint = savePointObj.transform;
+        int spawnPointIndex = -1;
+        for(int i=0; i<spawnPoints.Count; i++)
+        {
+            if (spawnPoints[i] == savePointObj.transform)
+            {
+                spawnPointIndex = i;
+                break;
+            }
+        }
+
+        if(spawnPointIndex != -1)
+        {
+            if(spawnPointIndex >= 0 && spawnPointIndex <= 3)
+            {
+                SoundManager.Instance.PlaySoundTrack("vagabond");
+            }
+            else if (spawnPointIndex >= 4 && spawnPointIndex <= 11)
+            {
+                SoundManager.Instance.PlaySoundTrack("main");
+            }
+            else if (spawnPointIndex >= 12 && spawnPointIndex <= 19)
+            {
+                SoundManager.Instance.PlaySoundTrack("cave");
+            }
+            else if (spawnPointIndex >= 20)
+            {
+                SoundManager.Instance.PlaySoundTrack("end");
+            }
+
+        }
+        
+    }
 }

@@ -173,3 +173,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   maxDistance: 20
+  hitEffectPrefab: {fileID: 6883304718802803639, guid: f9c8e288802bb4b498cd90cddf3bf001, type: 3}
+  breakEffectPrefab: {fileID: 7141384114529654979, guid: 5f7a75040cef8f241916b00d131620a0, type: 3}

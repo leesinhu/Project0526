@@ -12,6 +12,9 @@ public class Arrow : MonoBehaviour
     private Vector3 startPosition;
     public float maxDistance = 25f;
 
+    [SerializeField] private GameObject hitEffectPrefab;
+    [SerializeField] private GameObject breakEffectPrefab;
+
     public void SetArrow(bool is_right)
     {
         if (is_right)
@@ -46,6 +49,22 @@ public class Arrow : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Mimic")
         {
+            if (hitEffectPrefab != null)
+            {
+                GameObject fx = Instantiate(hitEffectPrefab, transform.position, Quaternion.identity);
+                if(moveDirection == Vector3.right)
+                {
+                    SpriteRenderer sp = fx.GetComponent<SpriteRenderer>();
+                    sp.flipX = !sp.flipX;
+                }
+                Destroy(fx, 2f);
+            }
+            if (breakEffectPrefab != null)
+            {
+                GameObject fx2 = Instantiate(breakEffectPrefab, collision.transform.position, Quaternion.identity);
+                Destroy(fx2, 2f);
+            }
+            SoundManager.Instance.PrintSoundEffect("slash");
             collision.gameObject.GetComponent<PlayerMovement>().Die();
             Destroy(gameObject);
         }

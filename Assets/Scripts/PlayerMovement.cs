@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject Arrow;
     GameObject obj_arrow;
 
-    [SerializeField] private ParticleSystem effect;
+    [SerializeField] private GameObject effectPrefab;
 
     public InputManager inputManager { get; set; }
     public float movement { get; set; }
@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (hasArrow && Input.GetKeyDown(KeyCode.A))
         {
+            SoundManager.Instance.PrintSoundEffect("throw");
             anim.SetTrigger("IsThrow");
             Vector3 spawnPos = transform.position + new Vector3(spriteRenderer.flipX ? -1f : 1f, 0.3f, 0f);
             var arrowInstance = Instantiate(Arrow, spawnPos, Quaternion.identity);
@@ -123,6 +124,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpFlag && isGrounded && (rb.velocity.y < 0.1f && rb.velocity.y > -0.1f))
         {
+            SoundManager.Instance.PrintSoundEffect("jump");
             rb.velocity = new Vector3(rb.velocity.x, 0f, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             anim.SetTrigger("IsJump");
@@ -251,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
         //���̺� ����Ʈ ���� �� ����
         if (collision.CompareTag("Respawn"))
         {
-            GameManager.Instance.lastSpawnPoint = collision.gameObject.transform;
+            GameManager.Instance.SetNewSavePoint(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -292,24 +294,13 @@ public class PlayerMovement : MonoBehaviour
     public void Die()
     {
         rb.velocity = Vector2.zero;
-        StartCoroutine(DieDelay());
-    }
 
-    private IEnumerator DieDelay()
-    {
         if (!isMimic)
         {
-            //��ü(player + ��� mimic)
-            effect.Play();
-            yield return new WaitForSeconds(0.5f);
             GameManager.Instance.DestroyObj();
         }
         else
         {
-            //�ش� mimic��
-                        effect.Play();
-
-            yield return new WaitForSeconds(0.5f);
             GameManager.Instance.DestroyObj(this.gameObject);
         }
     }

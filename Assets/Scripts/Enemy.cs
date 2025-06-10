@@ -1,12 +1,12 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     public Vector2 detectionOffset = Vector2.zero;
-    public float detectionRadiusX = 3f; // °¡·Î ¹İÁö¸§
-    public float detectionRadiusY = 5f; // ¼¼·Î ¹İÁö¸§
+    public float detectionRadiusX = 3f; // ê°€ë¡œ ë°˜ì§€ë¦„
+    public float detectionRadiusY = 5f; // ì„¸ë¡œ ë°˜ì§€ë¦„
 
     //public float detectionRange = 5f;
     public float moveSpeed = 2f;
@@ -14,11 +14,13 @@ public class Enemy : MonoBehaviour
 
     private Transform target;
     private Rigidbody2D rb;
-    private bool isChasing = false; // ÃßÀû »óÅÂ
-    public Vector3 startPosition; // ¸Å´Ş¸° À§Ä¡ ÀúÀå
+    private bool isChasing = false; // ì¶”ì  ìƒíƒœ
+    public Vector3 startPosition; // ë§¤ë‹¬ë¦° ìœ„ì¹˜ ì €ì¥
     private Vector3 targetLastPosition;
 
-    [SerializeField] private ParticleSystem effect;
+    [SerializeField] private GameObject deathEffectPrefab;
+    [SerializeField] private GameObject smokeEffectPrefab;
+    [SerializeField] private GameObject iceBreakEffectPrefab;
 
     Animator anim;
 
@@ -38,7 +40,7 @@ public class Enemy : MonoBehaviour
         }*/
     }
 
-    // ÇÃ·¹ÀÌ¾î, ºĞ½Å ÃßÀû
+    // í”Œë ˆì´ì–´, ë¶„ì‹  ì¶”ì 
     private void FixedUpdate()
     {
         if (isChasing && target != null)
@@ -49,7 +51,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // ¹üÀ§ ¾È¿¡¼­ ÇÃ·¹ÀÌ¾î, ºĞ½Å Å½Áö
+    // ë²”ìœ„ ì•ˆì—ì„œ í”Œë ˆì´ì–´, ë¶„ì‹  íƒì§€
     void FindTarget()
     {
         if (isChasing && target != null)
@@ -86,30 +88,42 @@ public class Enemy : MonoBehaviour
     {
         GameObject other = collision.gameObject;
 
-        // Ãæµ¹ ÈÄ ¸®¼Â ¹× ºñÈ°¼ºÈ­ ´ë»ó ÅÂ±×/ÀÌ¸§
         bool shouldReset =
             other.CompareTag("Player") ||
             other.CompareTag("Mimic") ||
             other.name.Contains("Gate") ||
             other.CompareTag("Waterfall") ||
+            other.CompareTag("IceWall")||
             other.CompareTag("Item");
 
         if (shouldReset)
         {
+            if (deathEffectPrefab != null)
+            {
+                GameObject fx = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+                Destroy(fx, 2f);
+            }
+            if (smokeEffectPrefab != null && (other.CompareTag("Player") || other.CompareTag("Mimic")))
+            {
+                GameObject fx2 = Instantiate(smokeEffectPrefab, other.transform.position, Quaternion.identity);
+                Destroy(fx2, 2f);
+            }
+            if(iceBreakEffectPrefab != null && other.CompareTag("IceWall"))
+            {
+                Vector2 tempPos = other.transform.position;
+                tempPos.y -= 2.5f;
+                GameObject fx3 = Instantiate(iceBreakEffectPrefab, tempPos, Quaternion.identity);
+                Destroy(fx3, 2f);
+            }
+
+            SoundManager.Instance.PrintSoundEffect("melt");
             anim.SetBool("isChasing", false);
             isChasing = false;
-            target = null; // Å¸°Ùµµ ÇØÁ¦
+            target = null;
 
-            effect.Play();
-            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-            Invoke("Die", 1f);
+            //GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+            Die();
         }
-
-        // ±× ¿Ü "Untagged" Ãæµ¹ ¹«½Ã
-        /*if (other.CompareTag("Untagged"))
-        {
-            Physics2D.IgnoreCollision(collision, GetComponent<Collider2D>());
-        }*/
     }
 
     private void Die()
@@ -119,13 +133,13 @@ public class Enemy : MonoBehaviour
     }
 
 
-    // ¾À ºä¿¡¼­ °¨Áö ¹üÀ§¸¦ °¡½ÃÀûÀ¸·Î Ç¥Çö
+    // ì”¬ ë·°ì—ì„œ ê°ì§€ ë²”ìœ„ë¥¼ ê°€ì‹œì ìœ¼ë¡œ í‘œí˜„
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(detectionRadiusX * 2, detectionRadiusY * 2, 0));
-        Gizmos.DrawWireSphere(Vector3.zero, 1f); // Å¸¿ø ´ëÃ¼ ½Ã°¢Àû ÂüÁ¶ (¿ø)
+        Gizmos.DrawWireSphere(Vector3.zero, 1f); // íƒ€ì› ëŒ€ì²´ ì‹œê°ì  ì°¸ì¡° (ì›)
     }
 
     public void ResetEnemy()
@@ -133,7 +147,7 @@ public class Enemy : MonoBehaviour
         GetComponent<SpriteRenderer>().color = Color.white;
         anim.SetBool("isChasing", false);
         isChasing = false;
-        target = null; // Å¸°Ùµµ ÇØÁ¦
+        target = null; // íƒ€ê²Ÿë„ í•´ì œ
         transform.position = startPosition;
     }
 

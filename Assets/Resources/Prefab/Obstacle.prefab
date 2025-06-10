@@ -147,6 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f0f317d93c72d448f0d29ba0784921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyEffectPrefab: {fileID: 3962335357230654684, guid: e086e44b72f22914e92c6f92aa0bc336, type: 3}
+  smokeEffectPrefab: {fileID: 4785061904134908526, guid: 046a6f0e492b78f438d74bf4f757949e, type: 3}
 --- !u!95 &6855362470052860058
 Animator:
   serializedVersion: 5
