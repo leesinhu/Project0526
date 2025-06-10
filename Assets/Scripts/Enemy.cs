@@ -72,6 +72,7 @@ public class Enemy : MonoBehaviour
                 {
                     if (hit.CompareTag(tag))
                     {
+                        SoundManager.Instance.PrintSoundEffect("bat");
                         target = hit.transform;
                         targetLastPosition = target.position;
                         isChasing = true;

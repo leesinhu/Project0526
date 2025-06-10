@@ -250,7 +250,6 @@ public class PlayerMovement : MonoBehaviour
             Die();
         }
 
-        //���̺� ����Ʈ ���� �� ����
         if (collision.CompareTag("Respawn"))
         {
             GameManager.Instance.SetNewSavePoint(collision.gameObject);

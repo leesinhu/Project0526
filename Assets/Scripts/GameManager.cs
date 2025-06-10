@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    CameraMovement camera;
+
     //Inspector
     public InputManager inputManager;
     public float moveSpeed;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
     //Flag
     public bool screenLimit { get; set; } = false;
     public bool wallLimit { get; set; } = false;
+    public bool clear = false;
 
     // Canvas
     [SerializeField] GameObject signUI;
@@ -50,6 +53,8 @@ public class GameManager : MonoBehaviour
         player = Resources.Load<GameObject>("Prefab/Player_Penguin");
 
         Physics2D.gravity = gravityScale;
+
+        camera = Camera.main.GetComponent<CameraMovement>();
     }
     private void Start()
     {
@@ -111,7 +116,7 @@ public class GameManager : MonoBehaviour
     {
         Physics2D.gravity = gravityScale;
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !clear)
         {
             StartCoroutine(Respawn());
         }
@@ -244,25 +249,44 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(spawnPointIndex != -1)
+        
+        if (spawnPointIndex != -1)
         {
-            if(spawnPointIndex >= 0 && spawnPointIndex <= 3)
+
+            if (spawnPointIndex >= 0 && spawnPointIndex <= 3)
             {
-                SoundManager.Instance.PlaySoundTrack("vagabond", 0.35f);
+                SoundManager.Instance.PlaySoundTrack("vagabond", 0.25f);
             }
             else if (spawnPointIndex >= 4 && spawnPointIndex <= 11)
             {
-                SoundManager.Instance.PlaySoundTrack("main", 0.65f);
+                SoundManager.Instance.PlaySoundTrack("adventure", 0.35f);
             }
             else if (spawnPointIndex >= 12 && spawnPointIndex <= 19)
             {
-                SoundManager.Instance.PlaySoundTrack("cave", 1);
+                SoundManager.Instance.PlaySoundTrack("cave", 0.8f);
             }
-            else if (spawnPointIndex >= 20)
+            else if (spawnPointIndex >= 20 && spawnPointIndex <= 26)
             {
-                SoundManager.Instance.PlaySoundTrack("end", 1);
+                if(spawnPointIndex == 20) camera.StartCameraCutScene(new Vector2(233.36f, -40.62513f));
+                SoundManager.Instance.PlaySoundTrack("main", 0.5f);
             }
-
+            else if (spawnPointIndex == 27)
+            {
+                SoundManager.Instance.PlaySoundTrack("mute", 0);
+            }
+            else if (spawnPointIndex == 28)
+            {
+                SoundManager.Instance.PlaySoundTrack("sunny", 0.7f, 5f);
+                camera.StartCameraCutScene(new Vector2(348.38f, -17.66195f));
+            }
+            else if (spawnPointIndex == 29)
+            {
+                clear = true;
+                camera.StartCameraCutScene(new Vector2(379.790009f, -19.6145744f), 5);
+                GameObject playerInstance = GameObject.FindWithTag("Player");
+                if (playerInstance != null)
+                    Destroy(playerInstance);
+            }
         }
         
     }

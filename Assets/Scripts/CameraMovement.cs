@@ -34,7 +34,7 @@ public class CameraMovement : MonoBehaviour
         //     StartCameraCutScene(new Vector3(12.8f, 0f, 0));
         // }
 
-        if(!isCutScene)
+        if(!isCutScene && !GameManager.Instance.clear)
         {
             if (target != null)
             {
@@ -69,18 +69,17 @@ public class CameraMovement : MonoBehaviour
         transform.position = pos;
     }
 
-    public void StartCameraCutScene(Vector3 targetPosition)
+    public void StartCameraCutScene(Vector3 targetPosition, float duration = 0.75f)
     {
         targetPosition.z = -10;
-        StartCoroutine(CameraCutScene(targetPosition));
+        StartCoroutine(CameraCutScene(targetPosition, duration));
     }
 
-    private IEnumerator CameraCutScene(Vector3 targetPosition)
+    private IEnumerator CameraCutScene(Vector3 targetPosition, float duration)
     {
         isCutScene = true;
 
         Vector3 cameraPos = transform.position;
-        float duration = 0.75f;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
