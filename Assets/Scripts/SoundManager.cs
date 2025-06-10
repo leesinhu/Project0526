@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -37,13 +38,14 @@ public class SoundManager : MonoBehaviour
             soundTracks.Add(child.name.Replace("audio_", ""), child.GetComponent<AudioSource>());
         }
     }
+
     public void PrintSoundEffect(string audioName)
     {
         AudioSource audioSource = soundEffects[audioName];
         audioSource.PlayOneShot(audioSource.clip);
     }
 
-    public void PlaySoundTrack(string audioName, float fadeDuration = 1f)
+    public void PlaySoundTrack(string audioName, float volumn = 1f, float fadeDuration = 1f)
     {
         if (!soundTracks.ContainsKey(audioName))
         {
@@ -58,10 +60,10 @@ public class SoundManager : MonoBehaviour
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
 
-        fadeCoroutine = StartCoroutine(FadeToNewBGM(newBGM, fadeDuration));
+        fadeCoroutine = StartCoroutine(FadeToNewBGM(newBGM, volumn, fadeDuration));
     }
 
-    private IEnumerator FadeToNewBGM(AudioSource newBGM, float duration)
+    private IEnumerator FadeToNewBGM(AudioSource newBGM, float targetVolumn, float duration)
     {
         float time = 0f;
         
@@ -82,7 +84,7 @@ public class SoundManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         currentBGM = newBGM;
-        float newBGMVolume = newBGM.volume;
+        float newBGMVolume = targetVolumn;
         currentBGM.volume = 0f;
         currentBGM.Play();
         time = 0f;

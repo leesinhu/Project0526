@@ -227,6 +227,7 @@ public class GameManager : MonoBehaviour
 
     public void BackToMain()
     {
+        SoundManager.Instance.PlaySoundTrack("main");
         SceneManager.LoadScene("Title");
     }
 
@@ -247,19 +248,19 @@ public class GameManager : MonoBehaviour
         {
             if(spawnPointIndex >= 0 && spawnPointIndex <= 3)
             {
-                SoundManager.Instance.PlaySoundTrack("vagabond");
+                SoundManager.Instance.PlaySoundTrack("vagabond", 0.35f);
             }
             else if (spawnPointIndex >= 4 && spawnPointIndex <= 11)
             {
-                SoundManager.Instance.PlaySoundTrack("main");
+                SoundManager.Instance.PlaySoundTrack("main", 0.65f);
             }
             else if (spawnPointIndex >= 12 && spawnPointIndex <= 19)
             {
-                SoundManager.Instance.PlaySoundTrack("cave");
+                SoundManager.Instance.PlaySoundTrack("cave", 1);
             }
             else if (spawnPointIndex >= 20)
             {
-                SoundManager.Instance.PlaySoundTrack("end");
+                SoundManager.Instance.PlaySoundTrack("end", 1);
             }
 
         }
